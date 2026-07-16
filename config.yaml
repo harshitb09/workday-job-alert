@@ -32,6 +32,12 @@ role_keywords: &role_keywords
   - "swe"
   - "backend engineer"
   - "backend developer"
+  - "frontend engineer"
+  - "frontend developer"
+  - "front-end developer"
+  - "front end developer"
+  - "web developer"
+  - "web engineer"
   - "full stack"
   - "full-stack"
   # Python / SQL
