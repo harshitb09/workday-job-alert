@@ -1,0 +1,40 @@
+name: Check Workday Jobs
+
+on:
+  schedule:
+    # every 5 minutes — roughly the practical floor GitHub Actions honors
+    # reliably (it can lag a few extra minutes under platform load, this
+    # isn't a hard real-time guarantee, just the closest cron gets you).
+    - cron: "*/5 * * * *"
+  workflow_dispatch: {}  # lets you trigger a run manually from the Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run job checker
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: python poll_workday.py
+
+      - name: Commit updated state
+        run: |
+          git config user.name "workday-job-alert-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add seen_jobs.json
+          git diff --quiet --cached || git commit -m "Update seen jobs state [skip ci]"
+          git push
