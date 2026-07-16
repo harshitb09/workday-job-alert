@@ -1,22 +1,13 @@
 #!/usr/bin/env python3
 """
-Job Alert (multi-ATS)
-----------------------
-Polls each company's public applicant-tracking-system API — Workday,
-Greenhouse, Lever, or Rippling — for each company in config.yaml, diffs
-against a "seen jobs" state file, and posts new postings to a Discord
-webhook.
-
-(Filename stays poll_workday.py to avoid breaking existing GitHub Actions
-workflow references, even though it now handles multiple ATS platforms.)
+Workday Job Alert
+------------------
+Polls Workday-hosted career sites (the public CXS JSON API used by their
+career site frontend) for each company in config.yaml, diffs against a
+"seen jobs" state file, and posts new postings to a Discord webhook.
 
 Designed to run on a schedule (cron / GitHub Actions). State is stored in
 seen_jobs.json so repeated runs only alert on genuinely new postings.
-
-Every fetch_jobs_<ats>() function returns a normalized list of dicts:
-    {"id": ..., "title": ..., "url": ..., "posted": ...}
-so the rest of the pipeline (dedup, keyword filtering, Discord alerts)
-doesn't need to know which ATS a company is on.
 """
 
 import json
@@ -37,7 +28,7 @@ DISCORD_WEBHOOK_URL = os.environ.get("DISCORD_WEBHOOK_URL", "").strip()
 HEADERS = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "User-Agent": "Mozilla/5.0 (compatible; JobAlertBot/1.0)",
+    "User-Agent": "Mozilla/5.0 (compatible; WorkdayJobAlert/1.0)",
 }
 
 REQUEST_TIMEOUT = 20
@@ -62,57 +53,41 @@ def save_state(state):
         json.dump(state, f, indent=2, sort_keys=True)
 
 
-def _request_with_retries(method, url, **kwargs):
-    """Shared retry wrapper for all ATS fetchers. Returns parsed JSON or
-    None if every attempt failed."""
-    last_err = None
-    for attempt in range(1, RETRIES + 1):
-        try:
-            resp = requests.request(method, url, timeout=REQUEST_TIMEOUT, **kwargs)
-            resp.raise_for_status()
-            return resp.json()
-        except Exception as e:  # noqa: BLE001
-            last_err = e
-            time.sleep(RETRY_SLEEP)
-    print(f"  [!] Request failed after {RETRIES} attempts: {url} ({last_err})")
-    return None
+def cxs_url(company):
+    return f"https://{company['tenant']}.{company['wd_host']}/wday/cxs/{company['tenant']}/{company['site']}/jobs"
 
 
-def company_key(company):
-    """Unique state-file key for a company entry, ATS-agnostic.
-
-    Workday keeps its original key format (no ats prefix) so existing
-    seen_jobs.json entries from before multi-ATS support keep matching —
-    otherwise every existing Workday company would silently re-seed on
-    the next run instead of picking up where it left off."""
-    ats = company.get("ats", "workday")
-    if ats == "workday":
-        return f"{company['tenant']}::{company['site']}"
-    elif ats == "greenhouse":
-        return f"greenhouse::{company['board_token']}"
-    elif ats == "lever":
-        return f"lever::{company['company']}"
-    elif ats == "rippling":
-        return f"rippling::{company['board_id']}"
-    else:
-        raise ValueError(f"Unknown ats type: {ats}")
+def career_site_base(company):
+    return f"https://{company['tenant']}.{company['wd_host']}/{company['site']}"
 
 
-# --------------------------------------------------------------------------
-# Workday
-# --------------------------------------------------------------------------
-
-def fetch_jobs_workday(company, page_size, max_jobs):
-    """Paginate through a company's Workday job postings (CXS API, POST)."""
-    url = f"https://{company['tenant']}.{company['wd_host']}/wday/cxs/{company['tenant']}/{company['site']}/jobs"
-    base = f"https://{company['tenant']}.{company['wd_host']}/{company['site']}"
-    normalized = []
+def fetch_jobs(company, page_size, max_jobs):
+    """Paginate through a company's Workday job postings."""
+    url = cxs_url(company)
+    all_postings = []
     offset = 0
 
     while offset < max_jobs:
-        body = {"appliedFacets": {}, "limit": page_size, "offset": offset, "searchText": ""}
-        data = _request_with_retries("POST", url, headers=HEADERS, json=body)
-        if data is None:
+        body = {
+            "appliedFacets": {},
+            "limit": page_size,
+            "offset": offset,
+            "searchText": "",
+        }
+
+        last_err = None
+        for attempt in range(1, RETRIES + 1):
+            try:
+                resp = requests.post(url, headers=HEADERS, json=body, timeout=REQUEST_TIMEOUT)
+                resp.raise_for_status()
+                data = resp.json()
+                last_err = None
+                break
+            except Exception as e:  # noqa: BLE001
+                last_err = e
+                time.sleep(RETRY_SLEEP)
+        else:
+            print(f"  [!] Failed to fetch {company['name']} at offset {offset}: {last_err}")
             break
 
         postings = data.get("jobPostings", [])
@@ -120,143 +95,13 @@ def fetch_jobs_workday(company, page_size, max_jobs):
         if not postings:
             break
 
-        for job in postings:
-            job_id = job.get("bulletFields", [None])[0] or job.get("externalPath")
-            if not job_id:
-                continue
-            normalized.append({
-                "id": job_id,
-                "title": job.get("title", ""),
-                "url": base + (job.get("externalPath") or ""),
-                "posted": job.get("postedOn", ""),
-            })
-
+        all_postings.extend(postings)
         offset += page_size
+
         if offset >= total:
             break
 
-    return normalized
-
-
-# --------------------------------------------------------------------------
-# Greenhouse
-# --------------------------------------------------------------------------
-
-def fetch_jobs_greenhouse(company, page_size, max_jobs):
-    """Single-request fetch — Greenhouse's public Job Board API returns
-    everything in one response, no pagination needed."""
-    token = company["board_token"]
-    url = f"https://boards-api.greenhouse.io/v1/boards/{token}/jobs?content=false"
-    data = _request_with_retries("GET", url, headers=HEADERS)
-    if data is None:
-        return []
-
-    normalized = []
-    for job in data.get("jobs", []):
-        job_id = job.get("id")
-        if job_id is None:
-            continue
-        normalized.append({
-            "id": str(job_id),
-            "title": job.get("title", ""),
-            "url": job.get("absolute_url", ""),
-            "posted": job.get("updated_at", ""),
-        })
-    return normalized[:max_jobs]
-
-
-# --------------------------------------------------------------------------
-# Lever
-# --------------------------------------------------------------------------
-
-def fetch_jobs_lever(company, page_size, max_jobs):
-    """Single-request fetch — Lever's public Postings API returns
-    everything in one response, no pagination needed."""
-    slug = company["company"]
-    url = f"https://api.lever.co/v0/postings/{slug}?mode=json"
-    data = _request_with_retries("GET", url, headers=HEADERS)
-    if data is None:
-        return []
-    if not isinstance(data, list):
-        # Lever returns a JSON error object (not a list) for unknown/disabled sites
-        print(f"  [!] Unexpected Lever response shape for '{slug}' — site may not exist or public postings may be disabled")
-        return []
-
-    normalized = []
-    for job in data:
-        job_id = job.get("id")
-        if not job_id:
-            continue
-        normalized.append({
-            "id": job_id,
-            "title": job.get("text", ""),
-            "url": job.get("hostedUrl", ""),
-            "posted": job.get("createdAt", ""),
-        })
-    return normalized[:max_jobs]
-
-
-# --------------------------------------------------------------------------
-# Rippling
-# --------------------------------------------------------------------------
-
-def fetch_jobs_rippling(company, page_size, max_jobs):
-    """Paginate through a company's Rippling job board API."""
-    board_id = company["board_id"]
-    base_job_url = f"https://ats.rippling.com/{board_id}/jobs"
-    normalized = []
-    page = 0
-    page_size_rippling = min(page_size, 50)  # Rippling's API caps around 50/page
-
-    while len(normalized) < max_jobs:
-        url = f"https://ats.rippling.com/api/v2/board/{board_id}/jobs"
-        params = {"page": page, "pageSize": page_size_rippling}
-        data = _request_with_retries("GET", url, headers=HEADERS, params=params)
-        if data is None:
-            break
-
-        items = data.get("items", [])
-        if not items:
-            break
-
-        for job in items:
-            job_id = job.get("id") or job.get("jobId")
-            if not job_id:
-                continue
-            title = job.get("title") or job.get("name") or ""
-            # Rippling listings don't always include a direct job URL; fall
-            # back to the board's jobs page with the id as an anchor guess.
-            url_field = job.get("applyUrl") or job.get("url") or f"{base_job_url}/{job_id}"
-            normalized.append({
-                "id": str(job_id),
-                "title": title,
-                "url": url_field,
-                "posted": job.get("postedAt") or job.get("createdAt") or "",
-            })
-
-        total_pages = data.get("totalPages", 1)
-        page += 1
-        if page >= total_pages:
-            break
-
-    return normalized[:max_jobs]
-
-
-ATS_FETCHERS = {
-    "workday": fetch_jobs_workday,
-    "greenhouse": fetch_jobs_greenhouse,
-    "lever": fetch_jobs_lever,
-    "rippling": fetch_jobs_rippling,
-}
-
-
-def fetch_jobs(company, page_size, max_jobs):
-    ats = company.get("ats", "workday")
-    fetcher = ATS_FETCHERS.get(ats)
-    if fetcher is None:
-        print(f"  [!] Unknown ats type '{ats}' for {company.get('name')} — skipping")
-        return []
-    return fetcher(company, page_size, max_jobs)
+    return all_postings
 
 
 def matches_keywords(title, keywords):
@@ -266,24 +111,22 @@ def matches_keywords(title, keywords):
     return any(kw.lower() in title_lower for kw in keywords)
 
 
-def send_discord_alert(company, job):
-    """Attempts to send a Discord alert. Returns True on confirmed success,
-    False if all retries failed (caller should NOT mark the job as seen in
-    that case, so it gets retried on the next run instead of being lost)."""
+def send_discord_alert(company, job, link):
     if not DISCORD_WEBHOOK_URL:
-        print(f"  [new] {company['name']}: {job.get('title')} -> {job.get('url')}  (no webhook set, printed only)")
-        return True  # nothing to retry — this is expected/intentional, not a failure
+        print(f"  [new] {company['name']}: {job.get('title')} -> {link}  (no webhook set, printed only)")
+        return
 
+    posted_on = job.get("postedOn", "")
     embed = {
-        "title": job.get("title") or "New Job Posting",
-        "url": job.get("url") or None,
+        "title": job.get("title", "New Job Posting"),
+        "url": link,
         "color": 5814783,
         "fields": [
             {"name": "Company", "value": company["name"], "inline": True},
         ],
     }
-    if job.get("posted"):
-        embed["fields"].append({"name": "Posted", "value": str(job["posted"]), "inline": True})
+    if posted_on:
+        embed["fields"].append({"name": "Posted", "value": posted_on, "inline": True})
 
     payload = {"embeds": [embed]}
 
@@ -295,13 +138,20 @@ def send_discord_alert(company, job):
                 time.sleep(float(retry_after) + 0.5)
                 continue
             resp.raise_for_status()
-            return True
+            return
         except Exception as e:  # noqa: BLE001
             print(f"  [!] Discord send failed (attempt {attempt}): {e}")
             time.sleep(RETRY_SLEEP)
 
-    print(f"  [!] Giving up on '{job.get('title')}' after {RETRIES} attempts — will retry next run")
-    return False
+
+def send_discord_note(text):
+    if not DISCORD_WEBHOOK_URL:
+        print(f"  [note] {text}")
+        return
+    try:
+        requests.post(DISCORD_WEBHOOK_URL, json={"content": text}, timeout=REQUEST_TIMEOUT)
+    except Exception as e:  # noqa: BLE001
+        print(f"  [!] Discord note failed: {e}")
 
 
 def main():
@@ -314,11 +164,11 @@ def main():
     total_new = 0
 
     for company in companies:
-        key = company_key(company)
+        key = f"{company['tenant']}::{company['site']}"
         seen_ids = set(state.get(key, []))
         is_first_run = key not in state
 
-        print(f"Checking {company['name']} [{company.get('ats','workday')}] ({key})...")
+        print(f"Checking {company['name']} ({key})...")
         postings = fetch_jobs(company, page_size, max_jobs)
         print(f"  fetched {len(postings)} postings")
 
@@ -326,11 +176,14 @@ def main():
         new_postings = []
 
         for job in postings:
-            job_id = job["id"]
+            job_id = job.get("bulletFields", [None])[0] or job.get("externalPath")
+            if not job_id:
+                continue
             current_ids.add(job_id)
 
             if job_id not in seen_ids:
-                if matches_keywords(job.get("title", ""), company.get("keywords") or []):
+                title = job.get("title", "")
+                if matches_keywords(title, company.get("keywords") or []):
                     new_postings.append(job)
 
         if is_first_run:
@@ -338,19 +191,11 @@ def main():
             # the very first run — just seed state silently.
             print(f"  first run for {company['name']}: seeding {len(current_ids)} jobs, no alerts sent")
         else:
-            failed_ids = set()
             for job in new_postings:
-                success = send_discord_alert(company, job)
-                if success:
-                    total_new += 1
-                else:
-                    # Don't record this job as "seen" — leaving it out of
-                    # current_ids means next run will treat it as new again
-                    # and retry the Discord send, instead of silently
-                    # losing it the way a failed send used to.
-                    failed_ids.add(job["id"])
+                link = career_site_base(company) + (job.get("externalPath") or "")
+                send_discord_alert(company, job, link)
+                total_new += 1
                 time.sleep(1)  # be gentle with Discord rate limits
-            current_ids -= failed_ids
 
         state[key] = sorted(current_ids)
 
