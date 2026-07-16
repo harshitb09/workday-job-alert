@@ -59,6 +59,7 @@ def main():
                 f"    ats: \"{platform}\"\n"
                 f"    {id_field}: \"{entry[id_field]}\"\n"
                 f"    keywords: *role_keywords\n"
+                f"    locations: *location_keywords\n"
             )
             new_blocks.append(block)
             existing_keys.add(key)
