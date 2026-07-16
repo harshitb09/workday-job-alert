@@ -80,6 +80,17 @@ python poll_workday.py
 Without `DISCORD_WEBHOOK_URL` set, it just prints what it would have sent —
 useful for testing your `config.yaml` without spamming Discord.
 
+To seed `seen_jobs.json` from the current postings without sending alerts (for
+historical backfills), run:
+
+```bash
+python poll_workday.py --backfill
+```
+
+Posts are now also filtered by location against each company's `locations`
+entries, using the location text returned by each ATS API. The built-in
+`location_keywords` example in `config.yaml` targets the USA and Germany.
+
 ## Adding companies on Greenhouse, Lever, or Rippling
 
 These are simpler than Workday — no host/site-slug guessing, just one

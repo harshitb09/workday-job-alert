@@ -521,7 +521,7 @@ def send_test_alert():
         return 1
 
 
-def main():
+def main(backfill=False):
     config = load_config()
     companies = config.get("companies", [])
     page_size = config.get("page_size", 20)
@@ -529,6 +529,8 @@ def main():
 
     if not DISCORD_WEBHOOK_URL:
         print("[!] DISCORD_WEBHOOK_URL is not set — alerts will only be printed to this log, not sent to Discord.")
+    if backfill:
+        print("Backfill mode enabled — no alerts will be sent; existing state will be seeded from current postings.")
     print(f"Loaded {len(companies)} companies from config.yaml. Max posting age for alerts: {MAX_POSTING_AGE_HOURS}h.")
     print()
 
@@ -591,6 +593,9 @@ def main():
                     continue
                 location_match_count += 1
 
+                if backfill:
+                    continue
+
                 # Alert on anything new-to-us that's also recently posted
                 # (within MAX_POSTING_AGE_HOURS) — covers both "brand new
                 # since last check" and "posted up to a day ago, just
@@ -606,6 +611,12 @@ def main():
                 print(f"  skipped (new but didn't match keywords): {skipped_titles}")
             if skipped_locations:
                 print(f"  skipped (matched keywords but wrong location): {skipped_locations}")
+
+            if backfill:
+                print(f"  backfill mode: seeded state from {len(postings)} postings without posting alerts")
+                state[key] = sorted(set(seen_ids) | current_ids)
+                checked_ok += 1
+                continue
 
             failed_ids = set()
             for job in to_alert:
@@ -660,9 +671,12 @@ if __name__ == "__main__":
     parser.add_argument("--test", action="store_true",
                          help="Send one synthetic test message to Discord and exit, "
                               "without touching config.yaml or seen_jobs.json.")
+    parser.add_argument("--backfill", action="store_true",
+                         help="Seed seen_jobs.json from the current postings for each company "
+                              "without sending alerts. Useful for historical backfills.")
     args = parser.parse_args()
 
     if args.test:
         sys.exit(send_test_alert())
     else:
-        sys.exit(main())
+        sys.exit(main(backfill=args.backfill))
