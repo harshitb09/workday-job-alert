@@ -171,3 +171,201 @@ candidates:
   - {name: "Capital One", tenant: "capitalone"}
   - {name: "Deloitte US", tenant: "deloitteus"}
   - {name: "Accenture", tenant: "accenture"}
+
+  # --- Batch 2: major tech, SaaS, fintech, AI, gaming, cybersecurity, dev tools ---
+  # These skew toward Greenhouse/Lever/Rippling rather than Workday — run
+  # discover_ats.py (not just discover_workday.py) against this batch.
+  - {name: "Google", tenant: "google"}
+  - {name: "Amazon", tenant: "amazon"}
+  - {name: "Microsoft", tenant: "microsoft"}
+  - {name: "Meta", tenant: "meta"}
+  - {name: "Apple", tenant: "apple"}
+  - {name: "Netflix", tenant: "netflix"}
+  - {name: "Spotify", tenant: "spotify"}
+  - {name: "Lyft", tenant: "lyft"}
+  - {name: "DoorDash", tenant: "doordash"}
+  - {name: "Instacart", tenant: "instacart"}
+  - {name: "Reddit", tenant: "reddit"}
+  - {name: "Discord", tenant: "discord"}
+  - {name: "Slack", tenant: "slack"}
+  - {name: "Dropbox", tenant: "dropbox"}
+  - {name: "Asana", tenant: "asana"}
+  - {name: "Notion", tenant: "notion"}
+  - {name: "Figma", tenant: "figma"}
+  - {name: "Canva", tenant: "canva"}
+  - {name: "Robinhood", tenant: "robinhood"}
+  - {name: "Coinbase", tenant: "coinbase"}
+  - {name: "Plaid", tenant: "plaid"}
+  - {name: "Brex", tenant: "brex"}
+  - {name: "Ramp", tenant: "ramp"}
+  - {name: "Chime", tenant: "chime"}
+  - {name: "Affirm", tenant: "affirm"}
+  - {name: "SoFi", tenant: "sofi"}
+  - {name: "Roblox", tenant: "roblox"}
+  - {name: "Unity Technologies", tenant: "unity"}
+  - {name: "Epic Games", tenant: "epicgames"}
+  - {name: "Riot Games", tenant: "riotgames"}
+  - {name: "Electronic Arts", tenant: "ea"}
+  - {name: "Activision Blizzard", tenant: "activisionblizzard"}
+  - {name: "Take-Two Interactive", tenant: "take2games"}
+  - {name: "Zynga", tenant: "zynga"}
+  - {name: "Palantir Technologies", tenant: "palantir"}
+  - {name: "Databricks", tenant: "databricks"}
+  - {name: "C3.ai", tenant: "c3ai"}
+  - {name: "Scale AI", tenant: "scaleai"}
+  - {name: "Anthropic", tenant: "anthropic"}
+  - {name: "OpenAI", tenant: "openai"}
+  - {name: "Cohere", tenant: "cohere"}
+  - {name: "Hugging Face", tenant: "huggingface"}
+  - {name: "Stability AI", tenant: "stabilityai"}
+  - {name: "Perplexity AI", tenant: "perplexity"}
+  - {name: "Waymo", tenant: "waymo"}
+  - {name: "Cruise", tenant: "cruise"}
+  - {name: "Rivian", tenant: "rivian"}
+  - {name: "Lucid Motors", tenant: "lucidmotors"}
+  - {name: "Tesla", tenant: "tesla"}
+  - {name: "Aurora Innovation", tenant: "aurora"}
+  - {name: "Samsara", tenant: "samsara"}
+  - {name: "Cloudflare", tenant: "cloudflare"}
+  - {name: "Fastly", tenant: "fastly"}
+  - {name: "Akamai", tenant: "akamai"}
+  - {name: "Confluent", tenant: "confluent"}
+  - {name: "Elastic", tenant: "elastic"}
+  - {name: "HashiCorp", tenant: "hashicorp"}
+  - {name: "GitLab", tenant: "gitlab"}
+  - {name: "GitHub", tenant: "github"}
+  - {name: "JFrog", tenant: "jfrog"}
+  - {name: "PagerDuty", tenant: "pagerduty"}
+  - {name: "New Relic", tenant: "newrelic"}
+  - {name: "Sumo Logic", tenant: "sumologic"}
+  - {name: "Dynatrace", tenant: "dynatrace"}
+  - {name: "Wiz", tenant: "wiz"}
+  - {name: "Snyk", tenant: "snyk"}
+  - {name: "Rapid7", tenant: "rapid7"}
+  - {name: "Tenable", tenant: "tenable"}
+  - {name: "Darktrace", tenant: "darktrace"}
+  - {name: "SentinelOne", tenant: "sentinelone"}
+  - {name: "Zscaler", tenant: "zscaler"}
+  - {name: "Netskope", tenant: "netskope"}
+  - {name: "Illumio", tenant: "illumio"}
+  - {name: "Twitch", tenant: "twitch"}
+  - {name: "ByteDance", tenant: "bytedance"}
+  - {name: "Pandora Media", tenant: "pandora"}
+  - {name: "SiriusXM", tenant: "siriusxm"}
+  - {name: "Peloton", tenant: "peloton"}
+  - {name: "Warby Parker", tenant: "warbyparker"}
+  - {name: "Allbirds", tenant: "allbirds"}
+  - {name: "Wayfair", tenant: "wayfair"}
+  - {name: "Chewy", tenant: "chewy"}
+  - {name: "Etsy", tenant: "etsy"}
+  - {name: "Faire", tenant: "faire"}
+  - {name: "Grubhub", tenant: "grubhub"}
+  - {name: "Yelp", tenant: "yelp"}
+  - {name: "Zillow", tenant: "zillow"}
+  - {name: "Redfin", tenant: "redfin"}
+  - {name: "Compass", tenant: "compass"}
+  - {name: "Opendoor", tenant: "opendoor"}
+  - {name: "Carvana", tenant: "carvana"}
+  - {name: "CarMax", tenant: "carmax"}
+  - {name: "Toast Inc", tenant: "toasttab"}
+  - {name: "Squarespace", tenant: "squarespace"}
+  - {name: "Wix", tenant: "wix"}
+  - {name: "Webflow", tenant: "webflow"}
+  - {name: "Bill.com", tenant: "billcom"}
+  - {name: "Marqeta", tenant: "marqeta"}
+  - {name: "Gusto", tenant: "gusto"}
+  - {name: "Deel", tenant: "deel"}
+  - {name: "Remote", tenant: "remote"}
+  - {name: "Justworks", tenant: "justworks"}
+  - {name: "Greenhouse Software", tenant: "greenhouse"}
+  - {name: "Monday.com", tenant: "mondaycom"}
+  - {name: "Smartsheet", tenant: "smartsheet"}
+  - {name: "Airtable", tenant: "airtable"}
+  - {name: "ClickUp", tenant: "clickup"}
+  - {name: "Miro", tenant: "miro"}
+  - {name: "Loom", tenant: "loom"}
+  - {name: "Calendly", tenant: "calendly"}
+  - {name: "Typeform", tenant: "typeform"}
+  - {name: "Momentive (SurveyMonkey)", tenant: "momentive"}
+  - {name: "Qualtrics", tenant: "qualtrics"}
+  - {name: "Medallia", tenant: "medallia"}
+  - {name: "Braze", tenant: "braze"}
+  - {name: "Iterable", tenant: "iterable"}
+  - {name: "Klaviyo", tenant: "klaviyo"}
+  - {name: "Mailchimp", tenant: "mailchimp"}
+  - {name: "Amplitude", tenant: "amplitude"}
+  - {name: "Mixpanel", tenant: "mixpanel"}
+  - {name: "Heap", tenant: "heap"}
+  - {name: "FullStory", tenant: "fullstory"}
+  - {name: "LaunchDarkly", tenant: "launchdarkly"}
+  - {name: "Optimizely", tenant: "optimizely"}
+  - {name: "Contentful", tenant: "contentful"}
+  - {name: "Netlify", tenant: "netlify"}
+  - {name: "Vercel", tenant: "vercel"}
+  - {name: "DigitalOcean", tenant: "digitalocean"}
+  - {name: "Vultr", tenant: "vultr"}
+  - {name: "Supabase", tenant: "supabase"}
+  - {name: "PlanetScale", tenant: "planetscale"}
+  - {name: "CockroachDB", tenant: "cockroachlabs"}
+  - {name: "Redis", tenant: "redis"}
+  - {name: "Neo4j", tenant: "neo4j"}
+  - {name: "Grafana Labs", tenant: "grafana"}
+  - {name: "Honeycomb", tenant: "honeycomb"}
+  - {name: "Sysdig", tenant: "sysdig"}
+  - {name: "Lacework", tenant: "lacework"}
+  - {name: "1Password", tenant: "1password"}
+  - {name: "Dashlane", tenant: "dashlane"}
+  - {name: "Ping Identity", tenant: "pingidentity"}
+  - {name: "SailPoint", tenant: "sailpoint"}
+  - {name: "CyberArk", tenant: "cyberark"}
+  - {name: "Varonis", tenant: "varonis"}
+  - {name: "Proofpoint", tenant: "proofpoint"}
+  - {name: "Mimecast", tenant: "mimecast"}
+  - {name: "KnowBe4", tenant: "knowbe4"}
+  - {name: "Check Point Software", tenant: "checkpoint"}
+  - {name: "LinkedIn", tenant: "linkedin"}
+  - {name: "Match Group", tenant: "matchgroup"}
+  - {name: "Bumble", tenant: "bumble"}
+  - {name: "Strava", tenant: "strava"}
+  - {name: "MyFitnessPal", tenant: "myfitnesspal"}
+  - {name: "Duolingo", tenant: "duolingo"}
+  - {name: "Coursera", tenant: "coursera"}
+  - {name: "Udemy", tenant: "udemy"}
+  - {name: "Chegg", tenant: "chegg"}
+  - {name: "Pluralsight", tenant: "pluralsight"}
+  - {name: "Instructure", tenant: "instructure"}
+  - {name: "PowerSchool", tenant: "powerschool"}
+  - {name: "Blackbaud", tenant: "blackbaud"}
+  - {name: "Guidewire", tenant: "guidewire"}
+  - {name: "Verisk Analytics", tenant: "verisk"}
+  - {name: "CoStar Group", tenant: "costargroup"}
+  - {name: "Nasdaq", tenant: "nasdaq"}
+  - {name: "CME Group", tenant: "cmegroup"}
+  - {name: "Cboe Global Markets", tenant: "cboe"}
+  - {name: "MSCI", tenant: "msci"}
+  - {name: "Moody's", tenant: "moodys"}
+  - {name: "Morningstar", tenant: "morningstar"}
+  - {name: "FactSet", tenant: "factset"}
+  - {name: "SS&C Technologies", tenant: "ssctech"}
+  - {name: "Jack Henry & Associates", tenant: "jackhenry"}
+  - {name: "Temenos", tenant: "temenos"}
+  - {name: "nCino", tenant: "ncino"}
+  - {name: "Q2 Holdings", tenant: "q2"}
+  - {name: "Teladoc Health", tenant: "teladochealth"}
+  - {name: "GoodRx", tenant: "goodrx"}
+  - {name: "Included Health", tenant: "includedhealth"}
+  - {name: "Oscar Health", tenant: "oscarhealth"}
+  - {name: "Veeva Systems", tenant: "veeva"}
+  - {name: "IQVIA", tenant: "iqvia"}
+  - {name: "Waters Corporation", tenant: "waters"}
+  - {name: "Illumina", tenant: "illumina"}
+  - {name: "Agilent Technologies", tenant: "agilent"}
+  - {name: "Becton Dickinson", tenant: "bd"}
+  - {name: "Stryker", tenant: "stryker"}
+  - {name: "Medtronic", tenant: "medtronic"}
+  - {name: "Boston Scientific", tenant: "bostonscientific"}
+  - {name: "Edwards Lifesciences", tenant: "edwards"}
+  - {name: "Intuitive Surgical", tenant: "intuitivesurgical"}
+  - {name: "Zimmer Biomet", tenant: "zimmerbiomet"}
+  - {name: "Abbott Laboratories", tenant: "abbott"}
+  - {name: "Danaher", tenant: "danaher"}
