@@ -1,13 +1,20 @@
 # Workday Job Alert
 
-Watches Workday-hosted career sites (companies like Nike, Salesforce, Adobe,
-etc. that use Workday for their careers page) and pings a Discord channel
-the moment a new job posting shows up.
+Watches job postings across **Workday, Greenhouse, Lever, and Rippling**
+career sites and pings a Discord channel the moment a new posting shows up
+matching your keywords.
 
-It works by calling Workday's own internal job-search API (the same one the
-careers page JavaScript calls), which returns clean JSON — no browser
-automation, headless Chrome, or scraping HTML needed. That makes it fast and
-cheap to run frequently.
+It works by calling each platform's own public job-search API directly (no
+browser automation, headless Chrome, or HTML scraping) — fast and cheap to
+run frequently.
+
+| Platform | How it works | Reliability |
+|---|---|---|
+| Workday | `myworkdayjobs.com` CXS API | High — but tenant/site slugs must be discovered (not guessable) |
+| Greenhouse | `boards-api.greenhouse.io` Job Board API | High — single request, slug is almost always the plain company name |
+| Lever | `api.lever.co` Postings API | High — single request, slug is almost always the plain company name |
+| Rippling | `ats.rippling.com` board API | High — same pattern as Lever/Greenhouse |
+| iCIMS | *(not implemented)* | No public API exists; would require fragile HTML scraping that breaks across iCIMS versions. Ask if you still want an experimental version. |
 
 ## 1. Set up the Discord webhook
 
@@ -73,7 +80,41 @@ python poll_workday.py
 Without `DISCORD_WEBHOOK_URL` set, it just prints what it would have sent —
 useful for testing your `config.yaml` without spamming Discord.
 
-## Scaling to 150+ companies (auto-discovery)
+## Adding companies on Greenhouse, Lever, or Rippling
+
+These are simpler than Workday — no host/site-slug guessing, just one
+identifier per platform. Add a block to `config.yaml` like:
+
+```yaml
+  - name: "Some Company"
+    ats: "greenhouse"
+    board_token: "somecompany"
+    keywords: *role_keywords
+
+  - name: "Some Other Company"
+    ats: "lever"
+    company: "someothercompany"
+    keywords: *role_keywords
+
+  - name: "A Third Company"
+    ats: "rippling"
+    board_id: "athirdcompany"
+    keywords: *role_keywords
+```
+
+To find the right value: visit the company's careers page. If the URL looks
+like `boards.greenhouse.io/companyname`, `jobs.lever.co/companyname`, or
+`ats.rippling.com/companyname/jobs`, that `companyname` segment is exactly
+what goes in `board_token` / `company` / `board_id`.
+
+Easiest way to find a lot of these at once: run the **"Discover
+Greenhouse/Lever/Rippling Companies"** GitHub Action (Actions tab → select
+it → Run workflow). It tests `candidates.yaml` against all three
+platforms' real APIs and auto-merges whatever's confirmed into
+`config.yaml` — same idea as the Workday discovery tool, just faster since
+these platforms don't need the host/slug-pattern brute force Workday does.
+
+## Scaling to 150+ Workday companies (auto-discovery)
 
 Workday site-slugs aren't guessable from a company name — Nike's is `nke`,
 not `NikeCareers`; PayPal's is `jobs`, not `JobSearch`. Guessing wrong just
