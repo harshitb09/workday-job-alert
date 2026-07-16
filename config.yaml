@@ -2,25 +2,28 @@
 #
 # HOW TO FIND YOUR VALUES:
 # Open a company's Workday careers page in your browser, e.g.:
-#   https://nike.wd1.myworkdayjobs.com/NikeCareers
+#   https://nike.wd1.myworkdayjobs.com/nke
 #
 # Break that URL down:
 #   https://{tenant}.{wd_host}/{site}
-#            nike     wd1.myworkdayjobs.com   NikeCareers
+#            nike     wd1.myworkdayjobs.com   nke
 #
 #   tenant      -> "nike"
-#   wd_host     -> "wd1.myworkdayjobs.com"   (could be wd1, wd3, wd5, etc.)
-#   site        -> "NikeCareers"             (exact case matters)
+#   wd_host     -> "wd1.myworkdayjobs.com"   (could be wd1, wd3, wd5, wd12, etc.)
+#   site        -> "nke"                     (exact case matters, and is often
+#                                              NOT the obvious human-readable name!)
+#
+# IMPORTANT: site slugs are not guessable from the company name (see Nike's
+# "nke" and PayPal's "jobs" below) and they occasionally change (Qualcomm
+# moved its whole career site off Workday's wd5 host in 2024). Always
+# confirm the real value yourself before trusting a company block:
+#   1. Open the company's careers page in a browser
+#   2. Open DevTools -> Network tab, filter for "jobs"
+#   3. Reload / search -> look for a POST to .../wday/cxs/{tenant}/{site}/jobs
+#   4. That URL gives you the exact tenant/wd_host/site to use
 #
 # "keywords" — only alert on postings whose title contains at least one of
 # these (case-insensitive). Leave empty / [] to alert on every new posting.
-#
-# The list below (&role_keywords) covers IT / AI / Data Science / Cyber /
-# Software Engineering / Python / SQL / Data Engineer / Data Analyst roles,
-# and includes both full-time and intern titles (most companies put
-# "Intern"/"Internship" directly in the job title, so it's included as a
-# keyword too — full-time roles need no special keyword since they're the
-# default and are already matched by the role terms below).
 
 role_keywords: &role_keywords
   # Software Engineering
@@ -62,11 +65,31 @@ role_keywords: &role_keywords
   - "internship"
   - "co-op"
 
+# Below are companies that (a) are well-documented, active visa sponsors
+# (H-1B/OPT/CPT — verified via public H-1B filing data sources) and (b)
+# I verified are actually hosted on Workday as of this writing, with the
+# real tenant/wd_host/site values pulled from their live career pages.
+# This is a starting set, NOT an exhaustive list — no such complete list
+# exists (thousands of companies sponsor visas; most don't use Workday).
+# Add more using the same pattern — see the bottom of this file.
+
 companies:
-  - name: "Nike"
-    tenant: "nike"
+  - name: "Visa"
+    tenant: "visa"
+    wd_host: "wd5.myworkdayjobs.com"
+    site: "Visa"
+    keywords: *role_keywords
+
+  - name: "Visa (Early Careers / Internships)"
+    tenant: "visa"
+    wd_host: "wd5.myworkdayjobs.com"
+    site: "Visa_Early_Careers"
+    keywords: *role_keywords
+
+  - name: "Mastercard"
+    tenant: "mastercard"
     wd_host: "wd1.myworkdayjobs.com"
-    site: "NikeCareers"
+    site: "CorporateCareers"
     keywords: *role_keywords
 
   - name: "Salesforce"
@@ -81,21 +104,39 @@ companies:
     site: "external_experienced"
     keywords: *role_keywords
 
+  - name: "PayPal"
+    tenant: "paypal"
+    wd_host: "wd1.myworkdayjobs.com"
+    site: "jobs"
+    keywords: *role_keywords
+
+  - name: "Nike"
+    tenant: "nike"
+    wd_host: "wd1.myworkdayjobs.com"
+    site: "nke"
+    keywords: *role_keywords
+
   - name: "Workday (yes, they use their own product)"
     tenant: "workday"
     wd_host: "wd5.myworkdayjobs.com"
     site: "Workday"
     keywords: *role_keywords
 
-  - name: "PayPal"
-    tenant: "paypal"
-    wd_host: "wd5.myworkdayjobs.com"
-    site: "JobSearch"
-    keywords: *role_keywords
-
-# Add more companies here, following the same pattern. Just copy a block
-# above, swap in the new tenant/wd_host/site, and reuse `*role_keywords`
-# (or write a custom list for that company if you want it to differ).
+# ---------------------------------------------------------------------
+# TO ADD MORE COMPANIES:
+# 1. Confirm the company actually sponsors visas (check myvisajobs.com,
+#    h1bgrader.com, or their own careers page — many post this directly).
+# 2. Confirm they're on Workday and get the real tenant/wd_host/site
+#    using the DevTools method described above.
+# 3. Copy a block above, swap in the new values, keep `keywords: *role_keywords`.
+#
+# Good candidates to check next (visa sponsors, may or may not be on
+# Workday, and slugs are NOT verified below — confirm before adding):
+#   Qualcomm, American Express, Capital One, Deloitte, PwC, EY, KPMG,
+#   Accenture, Micron, Texas Instruments, Dell, HP, Cisco, Nvidia,
+#   Intel, ServiceNow, Booking.com, Uber, Airbnb, Splunk, Workday
+#   consulting partners.
+# ---------------------------------------------------------------------
 
 # Settings
 max_jobs_per_company: 300   # safety cap on how many postings to scan per run

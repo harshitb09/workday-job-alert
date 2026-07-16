@@ -1,0 +1,173 @@
+# Candidate companies for Workday discovery.
+#
+# This is a list of well-known, large employers with documented visa
+# sponsorship history (H-1B/OPT/CPT), spanning tech, finance, pharma,
+# healthcare, industrials, and consulting. NOT all of these use Workday
+# for their public career site — many use Greenhouse, Lever, iCIMS,
+# SuccessFactors, Taleo, or a custom ATS instead.
+#
+# `discover_workday.py` reads this file and tests each `tenant` guess
+# against real Workday hosts/site-slug patterns to find out which ones
+# are actually live. Only entries it confirms get written to
+# discovered_companies.yaml — nothing here is added to config.yaml
+# automatically or blindly.
+#
+# tenant: best-guess slug (usually lowercase company name, no spaces/punctuation)
+# name: display name for Discord alerts / config.yaml
+
+candidates:
+  - {name: "Cisco", tenant: "cisco"}
+  - {name: "Micron", tenant: "micron"}
+  - {name: "Motorola Solutions", tenant: "motorolasolutions"}
+  - {name: "S&P Global", tenant: "spgi"}
+  - {name: "Qualcomm", tenant: "qualcomm"}
+  - {name: "Intel", tenant: "intel"}
+  - {name: "Texas Instruments", tenant: "ti"}
+  - {name: "Western Digital", tenant: "westerndigital"}
+  - {name: "Broadcom", tenant: "broadcom"}
+  - {name: "Juniper Networks", tenant: "juniper"}
+  - {name: "VMware", tenant: "vmware"}
+  - {name: "Autodesk", tenant: "autodesk"}
+  - {name: "Intuit", tenant: "intuit"}
+  - {name: "eBay", tenant: "ebay"}
+  - {name: "Pinterest", tenant: "pinterest"}
+  - {name: "Snap Inc", tenant: "snap"}
+  - {name: "Twilio", tenant: "twilio"}
+  - {name: "Zoom", tenant: "zoom"}
+  - {name: "DocuSign", tenant: "docusign"}
+  - {name: "Box", tenant: "box"}
+  - {name: "Okta", tenant: "okta"}
+  - {name: "CrowdStrike", tenant: "crowdstrike"}
+  - {name: "Palo Alto Networks", tenant: "paloaltonetworks"}
+  - {name: "Fortinet", tenant: "fortinet"}
+  - {name: "Snowflake", tenant: "snowflake"}
+  - {name: "MongoDB", tenant: "mongodb"}
+  - {name: "Datadog", tenant: "datadog"}
+  - {name: "HubSpot", tenant: "hubspot"}
+  - {name: "Atlassian", tenant: "atlassian"}
+  - {name: "UiPath", tenant: "uipath"}
+  - {name: "Coupa", tenant: "coupa"}
+  - {name: "Workiva", tenant: "workiva"}
+  - {name: "Anaplan", tenant: "anaplan"}
+  - {name: "Zendesk", tenant: "zendesk"}
+  - {name: "Expedia Group", tenant: "expedia"}
+  - {name: "Booking Holdings", tenant: "bookingholdings"}
+  - {name: "TripAdvisor", tenant: "tripadvisor"}
+  - {name: "GoDaddy", tenant: "godaddy"}
+  - {name: "Shopify", tenant: "shopify"}
+  - {name: "Block (Square)", tenant: "block"}
+  - {name: "Fiserv", tenant: "fiserv"}
+  - {name: "FIS", tenant: "fisglobal"}
+  - {name: "Global Payments", tenant: "globalpayments"}
+  - {name: "American Airlines", tenant: "aa"}
+  - {name: "Delta Air Lines", tenant: "delta"}
+  - {name: "United Airlines", tenant: "united"}
+  - {name: "Southwest Airlines", tenant: "southwest"}
+  - {name: "FedEx", tenant: "fedex"}
+  - {name: "UPS", tenant: "ups"}
+  - {name: "Honeywell", tenant: "honeywell"}
+  - {name: "General Electric", tenant: "ge"}
+  - {name: "GE Healthcare", tenant: "gehealthcare"}
+  - {name: "Lockheed Martin", tenant: "lockheedmartin"}
+  - {name: "RTX (Raytheon)", tenant: "rtx"}
+  - {name: "Northrop Grumman", tenant: "northropgrumman"}
+  - {name: "Boeing", tenant: "boeing"}
+  - {name: "General Dynamics", tenant: "gd"}
+  - {name: "L3Harris", tenant: "l3harris"}
+  - {name: "BAE Systems", tenant: "baesystems"}
+  - {name: "3M", tenant: "3m"}
+  - {name: "Caterpillar", tenant: "caterpillar"}
+  - {name: "Deere & Company", tenant: "deere"}
+  - {name: "Johnson & Johnson", tenant: "jnj"}
+  - {name: "Pfizer", tenant: "pfizer"}
+  - {name: "Merck", tenant: "merck"}
+  - {name: "AbbVie", tenant: "abbvie"}
+  - {name: "Bristol Myers Squibb", tenant: "bms"}
+  - {name: "Eli Lilly", tenant: "lilly"}
+  - {name: "Amgen", tenant: "amgen"}
+  - {name: "Gilead Sciences", tenant: "gilead"}
+  - {name: "Biogen", tenant: "biogen"}
+  - {name: "Regeneron", tenant: "regeneron"}
+  - {name: "Moderna", tenant: "moderna"}
+  - {name: "Genentech", tenant: "genentech"}
+  - {name: "Cigna", tenant: "cigna"}
+  - {name: "UnitedHealth Group", tenant: "unitedhealthgroup"}
+  - {name: "Elevance Health", tenant: "elevancehealth"}
+  - {name: "Humana", tenant: "humana"}
+  - {name: "CVS Health", tenant: "cvshealth"}
+  - {name: "HCA Healthcare", tenant: "hcahealthcare"}
+  - {name: "Bank of America", tenant: "bankofamerica"}
+  - {name: "Wells Fargo", tenant: "wellsfargo"}
+  - {name: "US Bank", tenant: "usbank"}
+  - {name: "PNC", tenant: "pnc"}
+  - {name: "Truist", tenant: "truist"}
+  - {name: "Charles Schwab", tenant: "schwab"}
+  - {name: "Fidelity Investments", tenant: "fidelity"}
+  - {name: "T. Rowe Price", tenant: "troweprice"}
+  - {name: "BlackRock", tenant: "blackrock"}
+  - {name: "State Street", tenant: "statestreet"}
+  - {name: "BNY Mellon", tenant: "bnymellon"}
+  - {name: "Northern Trust", tenant: "northerntrust"}
+  - {name: "Ally Financial", tenant: "ally"}
+  - {name: "Discover Financial", tenant: "discover"}
+  - {name: "Synchrony Financial", tenant: "synchrony"}
+  - {name: "Prudential Financial", tenant: "prudential"}
+  - {name: "MetLife", tenant: "metlife"}
+  - {name: "AIG", tenant: "aig"}
+  - {name: "Allstate", tenant: "allstate"}
+  - {name: "Progressive", tenant: "progressive"}
+  - {name: "Travelers", tenant: "travelers"}
+  - {name: "Liberty Mutual", tenant: "libertymutual"}
+  - {name: "Nationwide", tenant: "nationwide"}
+  - {name: "Chevron", tenant: "chevron"}
+  - {name: "ExxonMobil", tenant: "exxonmobil"}
+  - {name: "ConocoPhillips", tenant: "conocophillips"}
+  - {name: "Marathon Petroleum", tenant: "marathonpetroleum"}
+  - {name: "Phillips 66", tenant: "phillips66"}
+  - {name: "Occidental Petroleum", tenant: "oxy"}
+  - {name: "Halliburton", tenant: "halliburton"}
+  - {name: "SLB (Schlumberger)", tenant: "slb"}
+  - {name: "Baker Hughes", tenant: "bakerhughes"}
+  - {name: "Duke Energy", tenant: "duke-energy"}
+  - {name: "Southern Company", tenant: "southernco"}
+  - {name: "NextEra Energy", tenant: "nexteraenergy"}
+  - {name: "Dominion Energy", tenant: "dominionenergy"}
+  - {name: "Exelon", tenant: "exelon"}
+  - {name: "American Electric Power", tenant: "aep"}
+  - {name: "Coca-Cola", tenant: "coca-cola"}
+  - {name: "PepsiCo", tenant: "pepsico"}
+  - {name: "Procter & Gamble", tenant: "pg"}
+  - {name: "Colgate-Palmolive", tenant: "colgate"}
+  - {name: "Kimberly-Clark", tenant: "kimberly-clark"}
+  - {name: "General Mills", tenant: "generalmills"}
+  - {name: "Kraft Heinz", tenant: "kraftheinz"}
+  - {name: "Mondelez International", tenant: "mondelez"}
+  - {name: "Hershey", tenant: "hersheys"}
+  - {name: "Kellanova", tenant: "kellanova"}
+  - {name: "Target", tenant: "target"}
+  - {name: "Costco", tenant: "costco"}
+  - {name: "Home Depot", tenant: "homedepot"}
+  - {name: "Lowe's", tenant: "lowes"}
+  - {name: "Best Buy", tenant: "bestbuy"}
+  - {name: "Macy's", tenant: "macys"}
+  - {name: "Kohl's", tenant: "kohls"}
+  - {name: "Gap Inc", tenant: "gapinc"}
+  - {name: "Nordstrom", tenant: "nordstrom"}
+  - {name: "TJX Companies", tenant: "tjx"}
+  - {name: "Ross Stores", tenant: "rossstores"}
+  - {name: "Starbucks", tenant: "starbucks"}
+  - {name: "McDonald's", tenant: "mcdonalds"}
+  - {name: "Yum! Brands", tenant: "yum"}
+  - {name: "Chipotle", tenant: "chipotle"}
+  - {name: "Darden Restaurants", tenant: "darden"}
+  - {name: "Uber", tenant: "uber"}
+  - {name: "Airbnb", tenant: "airbnb"}
+  - {name: "ServiceNow", tenant: "servicenow"}
+  - {name: "Splunk", tenant: "splunk"}
+  - {name: "NVIDIA", tenant: "nvidia"}
+  - {name: "Dell Technologies", tenant: "dell"}
+  - {name: "HP Inc", tenant: "hp"}
+  - {name: "American Express", tenant: "americanexpress"}
+  - {name: "Capital One", tenant: "capitalone"}
+  - {name: "Deloitte US", tenant: "deloitteus"}
+  - {name: "Accenture", tenant: "accenture"}

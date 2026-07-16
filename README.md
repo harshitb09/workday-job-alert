@@ -73,6 +73,45 @@ python poll_workday.py
 Without `DISCORD_WEBHOOK_URL` set, it just prints what it would have sent —
 useful for testing your `config.yaml` without spamming Discord.
 
+## Scaling to 150+ companies (auto-discovery)
+
+Workday site-slugs aren't guessable from a company name — Nike's is `nke`,
+not `NikeCareers`; PayPal's is `jobs`, not `JobSearch`. Guessing wrong just
+fails silently. So instead of guessing, this repo includes a **discovery
+tool** that actually tests real combinations against the live API and only
+keeps what's confirmed to work.
+
+1. `candidates.yaml` — 150+ well-known companies (tech, finance, pharma,
+   healthcare, industrials, retail) with a best-guess tenant slug each.
+2. `discover_workday.py` — for each candidate, tries real Workday hosts
+   (wd1, wd3, wd5, wd10, wd12) × common site-slug patterns, in parallel,
+   and stops as soon as it finds a combination that returns actual job
+   postings. Writes results to `discovered_companies.yaml`, sorted into
+   `confirmed` / `uncertain` (200 OK, 0 jobs — could be legit-but-empty or
+   a near-miss) / `not_found`.
+3. `merge_discovered.py` — appends every `confirmed` company into
+   `config.yaml` (with the shared `*role_keywords` filter already
+   attached), skipping anything already present.
+
+**Easiest way to run this: the "Discover Workday Companies" GitHub Action**
+(Actions tab → select it → Run workflow). It runs discovery, auto-merges
+confirmed companies into `config.yaml`, and commits the result — because
+this makes a lot of requests, your sandbox/local network may get
+throttled, but GitHub Actions' runner won't be.
+
+Or run it locally:
+```bash
+python discover_workday.py          # scan all candidates
+python discover_workday.py --limit 20   # just the first 20, for a quick test
+python merge_discovered.py          # fold confirmed results into config.yaml
+```
+
+Not every candidate will resolve — many large companies (Google, Amazon,
+Microsoft, Apple, JPMorgan, Goldman Sachs, etc.) simply don't use Workday
+for their public career site, so `not_found` is expected and not a bug.
+Check `discovered_companies.yaml` afterward to see exactly what happened
+with each one. Feel free to add more names to `candidates.yaml` and re-run.
+
 ## Notes / limitations
 
 - Some Workday tenants rate-limit or occasionally return non-200 responses;
