@@ -214,6 +214,49 @@ def company_key(company):
         raise ValueError(f"Unknown ats type: {ats}")
 
 
+def _extract_location_workday(job):
+    """Workday's CXS API returns a combined location string, usually
+    'City, State, Country' — sometimes 'locationsText', occasionally under
+    a 'locations' list instead."""
+    loc = job.get("locationsText")
+    if loc:
+        return str(loc)
+    locations = job.get("locations")
+    if isinstance(locations, list) and locations:
+        names = [l.get("descriptor") or l.get("name") or "" for l in locations if isinstance(l, dict)]
+        return ", ".join(n for n in names if n)
+    return ""
+
+
+def _extract_location_greenhouse(job):
+    loc = job.get("location")
+    if isinstance(loc, dict):
+        return loc.get("name", "") or ""
+    if isinstance(loc, str):
+        return loc
+    return ""
+
+
+def _extract_location_lever(job):
+    categories = job.get("categories")
+    if isinstance(categories, dict):
+        return categories.get("location", "") or ""
+    return ""
+
+
+def _extract_location_rippling(job):
+    """Rippling's shape is inconsistent between listing and detail
+    endpoints — try the common variants defensively."""
+    loc = job.get("location")
+    if isinstance(loc, dict):
+        return loc.get("name") or loc.get("city") or loc.get("displayName") or ""
+    if isinstance(loc, list) and loc:
+        return ", ".join(str(l) for l in loc if l)
+    if isinstance(loc, str):
+        return loc
+    return ""
+
+
 # --------------------------------------------------------------------------
 # Workday
 # --------------------------------------------------------------------------
@@ -245,6 +288,7 @@ def fetch_jobs_workday(company, page_size, max_jobs):
                 "title": job.get("title", ""),
                 "url": base + (job.get("externalPath") or ""),
                 "posted": job.get("postedOn", ""),
+                "location": _extract_location_workday(job),
             })
 
         offset += page_size
@@ -277,6 +321,7 @@ def fetch_jobs_greenhouse(company, page_size, max_jobs):
             "title": job.get("title", ""),
             "url": job.get("absolute_url", ""),
             "posted": job.get("updated_at", ""),
+            "location": _extract_location_greenhouse(job),
         })
     return normalized[:max_jobs]
 
@@ -308,6 +353,7 @@ def fetch_jobs_lever(company, page_size, max_jobs):
             "title": job.get("text", ""),
             "url": job.get("hostedUrl", ""),
             "posted": job.get("createdAt", ""),
+            "location": _extract_location_lever(job),
         })
     return normalized[:max_jobs]
 
@@ -348,6 +394,7 @@ def fetch_jobs_rippling(company, page_size, max_jobs):
                 "title": title,
                 "url": url_field,
                 "posted": job.get("postedAt") or job.get("createdAt") or "",
+                "location": _extract_location_rippling(job),
             })
 
         total_pages = data.get("totalPages", 1)
@@ -382,6 +429,21 @@ def matches_keywords(title, keywords):
     return any(kw.lower() in title_lower for kw in keywords)
 
 
+def matches_location(location, allowed_locations):
+    """Same substring-match approach as matches_keywords. If a company has
+    no 'locations' filter configured, every posting passes (no location
+    restriction). If location text couldn't be extracted from the API
+    response at all (empty string), the posting is let through rather
+    than silently dropped — an unfiltered posting is safer than losing a
+    genuine match because a platform's location field was blank/unusual."""
+    if not allowed_locations:
+        return True
+    if not location:
+        return True
+    location_lower = location.lower()
+    return any(loc.lower() in location_lower for loc in allowed_locations)
+
+
 def send_discord_alert(company, job):
     """Attempts to send a Discord alert. Returns True on confirmed success,
     False if all retries failed (caller should NOT mark the job as seen in
@@ -400,6 +462,8 @@ def send_discord_alert(company, job):
     }
     if job.get("posted"):
         embed["fields"].append({"name": "Posted", "value": str(job["posted"]), "inline": True})
+    if job.get("location"):
+        embed["fields"].append({"name": "Location", "value": str(job["location"]), "inline": True})
 
     payload = {"embeds": [embed]}
 
@@ -504,8 +568,10 @@ def main():
             current_ids = set()
             unseen_count = 0
             keyword_match_count = 0
+            location_match_count = 0
             to_alert = []
             skipped_titles = []
+            skipped_locations = []
 
             for job in postings:
                 job_id = job["id"]
@@ -520,6 +586,11 @@ def main():
                     continue
                 keyword_match_count += 1
 
+                if not matches_location(job.get("location", ""), company.get("locations") or []):
+                    skipped_locations.append(f"{job.get('title', '(no title)')} [{job.get('location', '(no location listed)')}]")
+                    continue
+                location_match_count += 1
+
                 # Alert on anything new-to-us that's also recently posted
                 # (within MAX_POSTING_AGE_HOURS) — covers both "brand new
                 # since last check" and "posted up to a day ago, just
@@ -529,9 +600,12 @@ def main():
                     to_alert.append(job)
 
             print(f"  {unseen_count} new-to-us, {keyword_match_count} match keywords, "
+                  f"{location_match_count} match location, "
                   f"{len(to_alert)} within {MAX_POSTING_AGE_HOURS}h -> alerting {len(to_alert)}")
             if skipped_titles:
                 print(f"  skipped (new but didn't match keywords): {skipped_titles}")
+            if skipped_locations:
+                print(f"  skipped (matched keywords but wrong location): {skipped_locations}")
 
             failed_ids = set()
             for job in to_alert:
