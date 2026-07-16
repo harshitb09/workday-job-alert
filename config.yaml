@@ -87,6 +87,19 @@ role_keywords: &role_keywords
   - "associate developer"
   - "associate engineer"
 
+# Only alert on postings located in the USA or Germany. Matches against
+# whatever location text each platform's API returns (usually something
+# like "San Francisco, CA, United States" or "Berlin, Germany, Remote") —
+# same case-insensitive substring matching as role_keywords above.
+# A posting with no location info at all is let through rather than
+# dropped, since we can't tell where it is either way.
+location_keywords: &location_keywords
+  - "united states"
+  - "usa"
+  - "u.s."
+  - "germany"
+  - "deutschland"
+
 # Below are companies that (a) are well-documented, active visa sponsors
 # (H-1B/OPT/CPT — verified via public H-1B filing data sources) and (b)
 # I verified are actually hosted on Workday as of this writing, with the
@@ -96,199 +109,61 @@ role_keywords: &role_keywords
 # Add more using the same pattern — see the bottom of this file.
 
 companies:
-  - name: "Cisco"
-    tenant: "cisco"
-    wd_host: "wd5.myworkdayjobs.com"
-    site: "Cisco_Careers"
-    keywords: *role_keywords
-  - name: "Micron"
-    tenant: "micron"
-    wd_host: "wd1.myworkdayjobs.com"
-    site: "External"
-    keywords: *role_keywords
-  - name: "Motorola Solutions"
-    tenant: "motorolasolutions"
-    wd_host: "wd5.myworkdayjobs.com"
-    site: "Careers"
-    keywords: *role_keywords
-  - name: "S&P Global"
-    tenant: "spgi"
-    wd_host: "wd5.myworkdayjobs.com"
-    site: "SPGI_Careers"
-    keywords: *role_keywords
-  - name: "Intel"
-    tenant: "intel"
-    wd_host: "wd1.myworkdayjobs.com"
-    site: "External"
-    keywords: *role_keywords
-  - name: "Zoom"
-    tenant: "zoom"
-    wd_host: "wd5.myworkdayjobs.com"
-    site: "zoom"
-    keywords: *role_keywords
-  - name: "CrowdStrike"
-    tenant: "crowdstrike"
-    wd_host: "wd5.myworkdayjobs.com"
-    site: "CROWDSTRIKECareers"
-    keywords: *role_keywords
-  - name: "Zendesk"
-    tenant: "zendesk"
-    wd_host: "wd1.myworkdayjobs.com"
-    site: "zendesk"
-    keywords: *role_keywords
-  - name: "Boeing"
-    tenant: "boeing"
-    wd_host: "wd1.myworkdayjobs.com"
-    site: "External_Careers"
-    keywords: *role_keywords
-  - name: "3M"
-    tenant: "3m"
-    wd_host: "wd1.myworkdayjobs.com"
-    site: "Search"
-    keywords: *role_keywords
-  - name: "Pfizer"
-    tenant: "pfizer"
-    wd_host: "wd1.myworkdayjobs.com"
-    site: "PFIZERCareers"
-    keywords: *role_keywords
-  - name: "Amgen"
-    tenant: "amgen"
-    wd_host: "wd1.myworkdayjobs.com"
-    site: "Careers"
-    keywords: *role_keywords
-  - name: "Gilead Sciences"
-    tenant: "gilead"
-    wd_host: "wd1.myworkdayjobs.com"
-    site: "GileadCareers"
-    keywords: *role_keywords
-  - name: "Regeneron"
-    tenant: "regeneron"
-    wd_host: "wd1.myworkdayjobs.com"
-    site: "Careers"
-    keywords: *role_keywords
-  - name: "Cigna"
-    tenant: "cigna"
-    wd_host: "wd5.myworkdayjobs.com"
-    site: "CIGNACareers"
-    keywords: *role_keywords
-  - name: "Humana"
-    tenant: "humana"
-    wd_host: "wd5.myworkdayjobs.com"
-    site: "Humana_External_Career_Site"
-    keywords: *role_keywords
-  - name: "PNC"
-    tenant: "pnc"
-    wd_host: "wd5.myworkdayjobs.com"
-    site: "External"
-    keywords: *role_keywords
-  - name: "Truist"
-    tenant: "truist"
-    wd_host: "wd1.myworkdayjobs.com"
-    site: "Careers"
-    keywords: *role_keywords
-  - name: "T. Rowe Price"
-    tenant: "troweprice"
-    wd_host: "wd5.myworkdayjobs.com"
-    site: "TROWEPRICE"
-    keywords: *role_keywords
-  - name: "Prudential Financial"
-    tenant: "prudential"
-    wd_host: "wd3.myworkdayjobs.com"
-    site: "Prudential"
-    keywords: *role_keywords
-  - name: "AIG"
-    tenant: "aig"
-    wd_host: "wd1.myworkdayjobs.com"
-    site: "aig"
-    keywords: *role_keywords
-  - name: "Allstate"
-    tenant: "allstate"
-    wd_host: "wd5.myworkdayjobs.com"
-    site: "ALLSTATE_Careers"
-    keywords: *role_keywords
-  - name: "Travelers"
-    tenant: "travelers"
-    wd_host: "wd5.myworkdayjobs.com"
-    site: "External"
-    keywords: *role_keywords
-  - name: "Chevron"
-    tenant: "chevron"
-    wd_host: "wd5.myworkdayjobs.com"
-    site: "jobs"
-    keywords: *role_keywords
-  - name: "ConocoPhillips"
-    tenant: "conocophillips"
-    wd_host: "wd1.myworkdayjobs.com"
-    site: "External"
-    keywords: *role_keywords
-  - name: "Baker Hughes"
-    tenant: "bakerhughes"
-    wd_host: "wd5.myworkdayjobs.com"
-    site: "bakerhughes"
-    keywords: *role_keywords
-  - name: "Target"
-    tenant: "target"
-    wd_host: "wd5.myworkdayjobs.com"
-    site: "TargetCareers"
-    keywords: *role_keywords
-  - name: "Gap Inc"
-    tenant: "gapinc"
-    wd_host: "wd1.myworkdayjobs.com"
-    site: "gapinc"
-    keywords: *role_keywords
-  - name: "Chipotle"
-    tenant: "chipotle"
-    wd_host: "wd5.myworkdayjobs.com"
-    site: "ChipotleCareers"
-    keywords: *role_keywords
-
   - name: "Visa"
     tenant: "visa"
     wd_host: "wd5.myworkdayjobs.com"
     site: "Visa"
     keywords: *role_keywords
+    locations: *location_keywords
 
   - name: "Visa (Early Careers / Internships)"
     tenant: "visa"
     wd_host: "wd5.myworkdayjobs.com"
     site: "Visa_Early_Careers"
     keywords: *role_keywords
+    locations: *location_keywords
 
   - name: "Mastercard"
     tenant: "mastercard"
     wd_host: "wd1.myworkdayjobs.com"
     site: "CorporateCareers"
     keywords: *role_keywords
+    locations: *location_keywords
 
   - name: "Salesforce"
     tenant: "salesforce"
     wd_host: "wd12.myworkdayjobs.com"
     site: "External_Career_Site"
     keywords: *role_keywords
+    locations: *location_keywords
 
   - name: "Adobe"
     tenant: "adobe"
     wd_host: "wd5.myworkdayjobs.com"
     site: "external_experienced"
     keywords: *role_keywords
+    locations: *location_keywords
 
   - name: "PayPal"
     tenant: "paypal"
     wd_host: "wd1.myworkdayjobs.com"
     site: "jobs"
     keywords: *role_keywords
+    locations: *location_keywords
 
   - name: "Nike"
     tenant: "nike"
     wd_host: "wd1.myworkdayjobs.com"
     site: "nke"
     keywords: *role_keywords
+    locations: *location_keywords
 
   - name: "Workday (yes, they use their own product)"
     tenant: "workday"
     wd_host: "wd5.myworkdayjobs.com"
     site: "Workday"
     keywords: *role_keywords
+    locations: *location_keywords
 
 # ---------------------------------------------------------------------
 # TO ADD MORE COMPANIES:
@@ -296,7 +171,7 @@ companies:
 #    h1bgrader.com, or their own careers page — many post this directly).
 # 2. Confirm they're on Workday and get the real tenant/wd_host/site
 #    using the DevTools method described above.
-# 3. Copy a block above, swap in the new values, keep `keywords: *role_keywords`.
+# 3. Copy a block above, swap in the new values, keep `keywords: *role_keywords` and `locations: *location_keywords`.
 #
 # Good candidates to check next (visa sponsors, may or may not be on
 # Workday, and slugs are NOT verified below — confirm before adding):
