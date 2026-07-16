@@ -369,3 +369,285 @@ candidates:
   - {name: "Zimmer Biomet", tenant: "zimmerbiomet"}
   - {name: "Abbott Laboratories", tenant: "abbott"}
   - {name: "Danaher", tenant: "danaher"}
+
+  # --- Batch 3: telecom, media, automotive, staffing, hospitality,
+  # semiconductors, logistics, real estate, and additional tech/SaaS ---
+  - {name: "AT&T", tenant: "att"}
+  - {name: "Verizon", tenant: "verizon"}
+  - {name: "T-Mobile", tenant: "tmobile"}
+  - {name: "Comcast", tenant: "comcast"}
+  - {name: "Charter Communications", tenant: "charter"}
+  - {name: "Lumen Technologies", tenant: "lumen"}
+  - {name: "Frontier Communications", tenant: "frontier"}
+  - {name: "Dish Network", tenant: "dish"}
+  - {name: "Warner Bros Discovery", tenant: "wbd"}
+  - {name: "Paramount Global", tenant: "paramount"}
+  - {name: "NBCUniversal", tenant: "nbcuniversal"}
+  - {name: "The Walt Disney Company", tenant: "disney"}
+  - {name: "Sony Pictures", tenant: "sonypictures"}
+  - {name: "Fox Corporation", tenant: "foxcorp"}
+  - {name: "iHeartMedia", tenant: "iheartmedia"}
+  - {name: "News Corp", tenant: "newscorp"}
+  - {name: "The New York Times", tenant: "nytimes"}
+  - {name: "Bloomberg", tenant: "bloomberg"}
+  - {name: "Thomson Reuters", tenant: "thomsonreuters"}
+  - {name: "Gannett", tenant: "gannett"}
+  - {name: "General Motors", tenant: "gm"}
+  - {name: "Ford Motor Company", tenant: "ford"}
+  - {name: "Stellantis", tenant: "stellantis"}
+  - {name: "Toyota Motor North America", tenant: "toyota"}
+  - {name: "Honda North America", tenant: "honda"}
+  - {name: "Nissan North America", tenant: "nissan"}
+  - {name: "Hyundai Motor America", tenant: "hyundai"}
+  - {name: "Volkswagen Group of America", tenant: "vw"}
+  - {name: "BMW of North America", tenant: "bmw"}
+  - {name: "Mercedes-Benz USA", tenant: "mercedesbenz"}
+  - {name: "Subaru of America", tenant: "subaru"}
+  - {name: "Mazda North America", tenant: "mazda"}
+  - {name: "Volvo Cars USA", tenant: "volvocars"}
+  - {name: "Harley-Davidson", tenant: "harley-davidson"}
+  - {name: "Cummins", tenant: "cummins"}
+  - {name: "Paccar", tenant: "paccar"}
+  - {name: "Magna International", tenant: "magna"}
+  - {name: "Aptiv", tenant: "aptiv"}
+  - {name: "BorgWarner", tenant: "borgwarner"}
+  - {name: "Lear Corporation", tenant: "lear"}
+  - {name: "Adient", tenant: "adient"}
+  - {name: "Robert Half", tenant: "roberthalf"}
+  - {name: "ManpowerGroup", tenant: "manpowergroup"}
+  - {name: "Randstad", tenant: "randstad"}
+  - {name: "Kelly Services", tenant: "kellyservices"}
+  - {name: "Adecco Group", tenant: "adecco"}
+  - {name: "Insight Global", tenant: "insightglobal"}
+  - {name: "TEKsystems", tenant: "teksystems"}
+  - {name: "Cognizant", tenant: "cognizant"}
+  - {name: "Infosys", tenant: "infosys"}
+  - {name: "Tata Consultancy Services", tenant: "tcs"}
+  - {name: "Wipro", tenant: "wipro"}
+  - {name: "HCLTech", tenant: "hcltech"}
+  - {name: "Capgemini", tenant: "capgemini"}
+  - {name: "Genpact", tenant: "genpact"}
+  - {name: "DXC Technology", tenant: "dxc"}
+  - {name: "NTT DATA", tenant: "nttdata"}
+  - {name: "Marriott International", tenant: "marriott"}
+  - {name: "Hilton Worldwide", tenant: "hilton"}
+  - {name: "Hyatt Hotels", tenant: "hyatt"}
+  - {name: "InterContinental Hotels Group", tenant: "ihg"}
+  - {name: "Wyndham Hotels & Resorts", tenant: "wyndham"}
+  - {name: "Choice Hotels", tenant: "choicehotels"}
+  - {name: "MGM Resorts", tenant: "mgmresorts"}
+  - {name: "Caesars Entertainment", tenant: "caesars"}
+  - {name: "Las Vegas Sands", tenant: "lasvegassands"}
+  - {name: "Wynn Resorts", tenant: "wynnresorts"}
+  - {name: "Royal Caribbean Group", tenant: "royalcaribbean"}
+  - {name: "Carnival Corporation", tenant: "carnival"}
+  - {name: "Norwegian Cruise Line", tenant: "ncl"}
+  - {name: "Six Flags", tenant: "sixflags"}
+  - {name: "Cedar Fair", tenant: "cedarfair"}
+  - {name: "SeaWorld Entertainment", tenant: "seaworld"}
+  - {name: "GlobalFoundries", tenant: "globalfoundries"}
+  - {name: "Applied Materials", tenant: "appliedmaterials"}
+  - {name: "Lam Research", tenant: "lamresearch"}
+  - {name: "KLA Corporation", tenant: "kla"}
+  - {name: "ON Semiconductor", tenant: "onsemi"}
+  - {name: "Analog Devices", tenant: "analog"}
+  - {name: "Skyworks Solutions", tenant: "skyworks"}
+  - {name: "Marvell Technology", tenant: "marvell"}
+  - {name: "MediaTek USA", tenant: "mediatek"}
+  - {name: "NXP Semiconductors", tenant: "nxp"}
+  - {name: "Infineon Technologies Americas", tenant: "infineon"}
+  - {name: "STMicroelectronics", tenant: "st"}
+  - {name: "Microchip Technology", tenant: "microchip"}
+  - {name: "Entegris", tenant: "entegris"}
+  - {name: "Teradyne", tenant: "teradyne"}
+  - {name: "Coherent Corp", tenant: "coherent"}
+  - {name: "II-VI Incorporated", tenant: "ii-vi"}
+  - {name: "Old Dominion Freight Line", tenant: "odfl"}
+  - {name: "J.B. Hunt Transport", tenant: "jbhunt"}
+  - {name: "XPO Logistics", tenant: "xpo"}
+  - {name: "C.H. Robinson", tenant: "chrobinson"}
+  - {name: "Landstar System", tenant: "landstar"}
+  - {name: "Union Pacific Railroad", tenant: "unionpacific"}
+  - {name: "BNSF Railway", tenant: "bnsf"}
+  - {name: "CSX Corporation", tenant: "csx"}
+  - {name: "Norfolk Southern", tenant: "norfolksouthern"}
+  - {name: "Ryder System", tenant: "ryder"}
+  - {name: "Penske Logistics", tenant: "penske"}
+  - {name: "Flexport", tenant: "flexport"}
+  - {name: "Convoy", tenant: "convoy"}
+  - {name: "Uber Freight", tenant: "uberfreight"}
+  - {name: "CBRE Group", tenant: "cbre"}
+  - {name: "JLL", tenant: "jll"}
+  - {name: "Cushman & Wakefield", tenant: "cushmanwakefield"}
+  - {name: "Colliers International", tenant: "colliers"}
+  - {name: "Realogy (Anywhere Real Estate)", tenant: "anywhere"}
+  - {name: "eXp Realty", tenant: "exprealty"}
+  - {name: "RE/MAX", tenant: "remax"}
+  - {name: "Keller Williams", tenant: "kw"}
+  - {name: "Prologis", tenant: "prologis"}
+  - {name: "Simon Property Group", tenant: "simon"}
+  - {name: "Public Storage", tenant: "publicstorage"}
+  - {name: "Equity Residential", tenant: "equityresidential"}
+  - {name: "AvalonBay Communities", tenant: "avalonbay"}
+  - {name: "Weyerhaeuser", tenant: "weyerhaeuser"}
+  - {name: "International Paper", tenant: "internationalpaper"}
+  - {name: "Packaging Corporation of America", tenant: "packagingcorp"}
+  - {name: "Ball Corporation", tenant: "ball"}
+  - {name: "Crown Holdings", tenant: "crownholdings"}
+  - {name: "Sealed Air", tenant: "sealedair"}
+  - {name: "Avery Dennison", tenant: "averydennison"}
+  - {name: "Dow Inc", tenant: "dow"}
+  - {name: "DuPont", tenant: "dupont"}
+  - {name: "LyondellBasell", tenant: "lyondellbasell"}
+  - {name: "Eastman Chemical", tenant: "eastman"}
+  - {name: "Air Products and Chemicals", tenant: "airproducts"}
+  - {name: "Linde", tenant: "linde"}
+  - {name: "Celanese", tenant: "celanese"}
+  - {name: "PPG Industries", tenant: "ppg"}
+  - {name: "Sherwin-Williams", tenant: "sherwin-williams"}
+  - {name: "Ecolab", tenant: "ecolab"}
+  - {name: "Corteva", tenant: "corteva"}
+  - {name: "FMC Corporation", tenant: "fmc"}
+  - {name: "Archer-Daniels-Midland", tenant: "adm"}
+  - {name: "Bunge Global", tenant: "bunge"}
+  - {name: "Tyson Foods", tenant: "tysonfoods"}
+  - {name: "JBS USA", tenant: "jbsusa"}
+  - {name: "Conagra Brands", tenant: "conagrabrands"}
+  - {name: "Campbell Soup Company", tenant: "campbells"}
+  - {name: "J.M. Smucker Company", tenant: "jmsmucker"}
+  - {name: "Hormel Foods", tenant: "hormel"}
+  - {name: "McCormick & Company", tenant: "mccormick"}
+  - {name: "Constellation Brands", tenant: "cbrands"}
+  - {name: "Molson Coors Beverage Company", tenant: "molsoncoors"}
+  - {name: "Brown-Forman", tenant: "brown-forman"}
+  - {name: "Keurig Dr Pepper", tenant: "keurigdrpepper"}
+  - {name: "Monster Beverage", tenant: "monsterbevcorp"}
+  - {name: "Altria Group", tenant: "altria"}
+  - {name: "Philip Morris International", tenant: "pmi"}
+  - {name: "Church & Dwight", tenant: "churchdwight"}
+  - {name: "Clorox", tenant: "clorox"}
+  - {name: "Newell Brands", tenant: "newellbrands"}
+  - {name: "Stanley Black & Decker", tenant: "stanleyblackanddecker"}
+  - {name: "Illinois Tool Works", tenant: "itw"}
+  - {name: "Emerson Electric", tenant: "emerson"}
+  - {name: "Eaton Corporation", tenant: "eaton"}
+  - {name: "Rockwell Automation", tenant: "rockwellautomation"}
+  - {name: "Parker Hannifin", tenant: "parkerhannifin"}
+  - {name: "Dover Corporation", tenant: "dovercorp"}
+  - {name: "Xylem", tenant: "xylem"}
+  - {name: "AMETEK", tenant: "ametek"}
+  - {name: "Roper Technologies", tenant: "ropertech"}
+  - {name: "Fortive", tenant: "fortive"}
+  - {name: "Trane Technologies", tenant: "tranetechnologies"}
+  - {name: "Carrier Global", tenant: "carrier"}
+  - {name: "Johnson Controls", tenant: "johnsoncontrols"}
+  - {name: "Lennox International", tenant: "lennox"}
+  - {name: "Otis Worldwide", tenant: "otis"}
+  - {name: "Xerox", tenant: "xerox"}
+  - {name: "Pitney Bowes", tenant: "pitneybowes"}
+  - {name: "NCR Voyix", tenant: "ncrvoyix"}
+  - {name: "Diebold Nixdorf", tenant: "dieboldnixdorf"}
+  - {name: "Zebra Technologies", tenant: "zebra"}
+  - {name: "Trimble", tenant: "trimble"}
+  - {name: "Garmin", tenant: "garmin"}
+  - {name: "Logitech", tenant: "logitech"}
+  - {name: "Corsair Gaming", tenant: "corsair"}
+  - {name: "GoPro", tenant: "gopro"}
+  - {name: "Sonos", tenant: "sonos"}
+  - {name: "iRobot", tenant: "irobot"}
+  - {name: "Whirlpool Corporation", tenant: "whirlpool"}
+  - {name: "Electrolux North America", tenant: "electrolux"}
+  - {name: "Generac Holdings", tenant: "generac"}
+  - {name: "A. O. Smith", tenant: "aosmith"}
+  - {name: "Masco Corporation", tenant: "masco"}
+  - {name: "Fortune Brands Innovations", tenant: "fortunebrands"}
+  - {name: "Mohawk Industries", tenant: "mohawkind"}
+  - {name: "Owens Corning", tenant: "owenscorning"}
+  - {name: "Builders FirstSource", tenant: "bldr"}
+  - {name: "Pulte Group", tenant: "pultegroup"}
+  - {name: "Lennar Corporation", tenant: "lennar"}
+  - {name: "D.R. Horton", tenant: "drhorton"}
+  - {name: "NVR Inc", tenant: "nvrinc"}
+  - {name: "Toll Brothers", tenant: "tollbrothers"}
+  - {name: "KB Home", tenant: "kbhome"}
+  - {name: "Cintas Corporation", tenant: "cintas"}
+  - {name: "Waste Management", tenant: "wm"}
+  - {name: "Republic Services", tenant: "republicservices"}
+  - {name: "Iron Mountain", tenant: "ironmountain"}
+  - {name: "ADT Inc", tenant: "adt"}
+  - {name: "Allied Universal", tenant: "allieduniversal"}
+  - {name: "Aramark", tenant: "aramark"}
+  - {name: "Sodexo North America", tenant: "sodexo"}
+  - {name: "Compass Group USA", tenant: "compassgroupusa"}
+  - {name: "ADP", tenant: "adp"}
+  - {name: "Paychex", tenant: "paychex"}
+  - {name: "Paycom", tenant: "paycom"}
+  - {name: "Paylocity", tenant: "paylocity"}
+  - {name: "TriNet", tenant: "trinet"}
+  - {name: "Insperity", tenant: "insperity"}
+  - {name: "UKG (Ultimate Kronos Group)", tenant: "ukg"}
+  - {name: "Ceridian (Dayforce)", tenant: "dayforce"}
+  - {name: "Automatic Data Processing", tenant: "adpcareers"}
+  - {name: "Booz Allen Hamilton", tenant: "boozallen"}
+  - {name: "Leidos", tenant: "leidos"}
+  - {name: "SAIC", tenant: "saic"}
+  - {name: "CACI International", tenant: "caci"}
+  - {name: "ManTech International", tenant: "mantech"}
+  - {name: "Parsons Corporation", tenant: "parsons"}
+  - {name: "Jacobs Engineering", tenant: "jacobs"}
+  - {name: "AECOM", tenant: "aecom"}
+  - {name: "Fluor Corporation", tenant: "fluor"}
+  - {name: "Bechtel", tenant: "bechtel"}
+  - {name: "KBR Inc", tenant: "kbr"}
+  - {name: "Textron", tenant: "textron"}
+  - {name: "Huntington Ingalls Industries", tenant: "hii"}
+  - {name: "L3Harris Technologies", tenant: "l3harristech"}
+  - {name: "Collins Aerospace", tenant: "collinsaerospace"}
+  - {name: "Spirit AeroSystems", tenant: "spiritaero"}
+  - {name: "Woodward Inc", tenant: "woodward"}
+  - {name: "Curtiss-Wright", tenant: "curtisswright"}
+  - {name: "TransDigm Group", tenant: "transdigm"}
+  - {name: "Hexcel Corporation", tenant: "hexcel"}
+  - {name: "Axon Enterprise", tenant: "axon"}
+  - {name: "Leidos Innovations", tenant: "leidosinnovations"}
+  - {name: "Peraton", tenant: "peraton"}
+  - {name: "CGI Group", tenant: "cgi"}
+  - {name: "Unisys", tenant: "unisys"}
+  - {name: "Kyndryl", tenant: "kyndryl"}
+  - {name: "Rackspace Technology", tenant: "rackspace"}
+  - {name: "Nutanix", tenant: "nutanix"}
+  - {name: "Pure Storage", tenant: "purestorage"}
+  - {name: "NetApp", tenant: "netapp"}
+  - {name: "Seagate Technology", tenant: "seagate"}
+  - {name: "Arista Networks", tenant: "arista"}
+  - {name: "F5 Inc", tenant: "f5"}
+  - {name: "A10 Networks", tenant: "a10networks"}
+  - {name: "Extreme Networks", tenant: "extremenetworks"}
+  - {name: "Ciena", tenant: "ciena"}
+  - {name: "CommScope", tenant: "commscope"}
+  - {name: "Corning Incorporated", tenant: "corning"}
+  - {name: "Keysight Technologies", tenant: "keysight"}
+  - {name: "National Instruments (NI)", tenant: "ni"}
+  - {name: "Fluke Corporation", tenant: "fluke"}
+  - {name: "Honeywell Aerospace", tenant: "honeywellaerospace"}
+  - {name: "Garmin International", tenant: "garmininternational"}
+  - {name: "Universal Electronics", tenant: "universalelectronics"}
+  - {name: "Vizio", tenant: "vizio"}
+  - {name: "Roku", tenant: "roku"}
+  - {name: "TiVo", tenant: "tivo"}
+  - {name: "Sirius Computer Solutions", tenant: "siriuscom"}
+  - {name: "World Wide Technology", tenant: "wwt"}
+  - {name: "Presidio", tenant: "presidio"}
+  - {name: "CDW Corporation", tenant: "cdw"}
+  - {name: "Insight Enterprises", tenant: "insight"}
+  - {name: "SHI International", tenant: "shi"}
+  - {name: "Softchoice", tenant: "softchoice"}
+  - {name: "Synnex (TD Synnex)", tenant: "tdsynnex"}
+  - {name: "Ingram Micro", tenant: "ingrammicro"}
+  - {name: "Arrow Electronics", tenant: "arrow"}
+  - {name: "Avnet", tenant: "avnet"}
+  - {name: "Jabil", tenant: "jabil"}
+  - {name: "Flex Ltd", tenant: "flex"}
+  - {name: "Sanmina Corporation", tenant: "sanmina"}
+  - {name: "Celestica", tenant: "celestica"}
+  - {name: "Benchmark Electronics", tenant: "benchmark"}
