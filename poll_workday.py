@@ -112,9 +112,12 @@ def matches_keywords(title, keywords):
 
 
 def send_discord_alert(company, job, link):
+    """Attempts to send a Discord alert. Returns True on confirmed success,
+    False if all retries failed (caller should NOT mark the job as seen in
+    that case, so it gets retried on the next run instead of being lost)."""
     if not DISCORD_WEBHOOK_URL:
         print(f"  [new] {company['name']}: {job.get('title')} -> {link}  (no webhook set, printed only)")
-        return
+        return True  # nothing to retry — this is expected/intentional, not a failure
 
     posted_on = job.get("postedOn", "")
     embed = {
@@ -138,10 +141,13 @@ def send_discord_alert(company, job, link):
                 time.sleep(float(retry_after) + 0.5)
                 continue
             resp.raise_for_status()
-            return
+            return True
         except Exception as e:  # noqa: BLE001
             print(f"  [!] Discord send failed (attempt {attempt}): {e}")
             time.sleep(RETRY_SLEEP)
+
+    print(f"  [!] Giving up on '{job.get('title')}' after {RETRIES} attempts — will retry next run")
+    return False
 
 
 def send_discord_note(text):
@@ -191,11 +197,21 @@ def main():
             # the very first run — just seed state silently.
             print(f"  first run for {company['name']}: seeding {len(current_ids)} jobs, no alerts sent")
         else:
+            failed_ids = set()
             for job in new_postings:
                 link = career_site_base(company) + (job.get("externalPath") or "")
-                send_discord_alert(company, job, link)
-                total_new += 1
+                job_id = job.get("bulletFields", [None])[0] or job.get("externalPath")
+                success = send_discord_alert(company, job, link)
+                if success:
+                    total_new += 1
+                else:
+                    # Don't record this job as "seen" — leaving it out of
+                    # current_ids means next run will treat it as new again
+                    # and retry the Discord send, instead of silently
+                    # losing it the way a failed send used to.
+                    failed_ids.add(job_id)
                 time.sleep(1)  # be gentle with Discord rate limits
+            current_ids -= failed_ids
 
         state[key] = sorted(current_ids)
 
