@@ -410,6 +410,7 @@ def main():
         unseen_count = 0
         keyword_match_count = 0
         to_alert = []
+        skipped_titles = []
 
         for job in postings:
             job_id = job["id"]
@@ -420,6 +421,7 @@ def main():
             unseen_count += 1
 
             if not matches_keywords(job.get("title", ""), company.get("keywords") or []):
+                skipped_titles.append(job.get("title", "(no title)"))
                 continue
             keyword_match_count += 1
 
@@ -433,6 +435,8 @@ def main():
 
         print(f"  {unseen_count} new-to-us, {keyword_match_count} match keywords, "
               f"{len(to_alert)} within {MAX_POSTING_AGE_HOURS}h -> alerting {len(to_alert)}")
+        if skipped_titles:
+            print(f"  skipped (new but didn't match keywords): {skipped_titles}")
 
         failed_ids = set()
         for job in to_alert:
