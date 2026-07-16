@@ -96,6 +96,152 @@ role_keywords: &role_keywords
 # Add more using the same pattern — see the bottom of this file.
 
 companies:
+  - name: "Cisco"
+    tenant: "cisco"
+    wd_host: "wd5.myworkdayjobs.com"
+    site: "Cisco_Careers"
+    keywords: *role_keywords
+  - name: "Micron"
+    tenant: "micron"
+    wd_host: "wd1.myworkdayjobs.com"
+    site: "External"
+    keywords: *role_keywords
+  - name: "Motorola Solutions"
+    tenant: "motorolasolutions"
+    wd_host: "wd5.myworkdayjobs.com"
+    site: "Careers"
+    keywords: *role_keywords
+  - name: "S&P Global"
+    tenant: "spgi"
+    wd_host: "wd5.myworkdayjobs.com"
+    site: "SPGI_Careers"
+    keywords: *role_keywords
+  - name: "Intel"
+    tenant: "intel"
+    wd_host: "wd1.myworkdayjobs.com"
+    site: "External"
+    keywords: *role_keywords
+  - name: "Zoom"
+    tenant: "zoom"
+    wd_host: "wd5.myworkdayjobs.com"
+    site: "zoom"
+    keywords: *role_keywords
+  - name: "CrowdStrike"
+    tenant: "crowdstrike"
+    wd_host: "wd5.myworkdayjobs.com"
+    site: "CROWDSTRIKECareers"
+    keywords: *role_keywords
+  - name: "Zendesk"
+    tenant: "zendesk"
+    wd_host: "wd1.myworkdayjobs.com"
+    site: "zendesk"
+    keywords: *role_keywords
+  - name: "Boeing"
+    tenant: "boeing"
+    wd_host: "wd1.myworkdayjobs.com"
+    site: "External_Careers"
+    keywords: *role_keywords
+  - name: "3M"
+    tenant: "3m"
+    wd_host: "wd1.myworkdayjobs.com"
+    site: "Search"
+    keywords: *role_keywords
+  - name: "Pfizer"
+    tenant: "pfizer"
+    wd_host: "wd1.myworkdayjobs.com"
+    site: "PFIZERCareers"
+    keywords: *role_keywords
+  - name: "Amgen"
+    tenant: "amgen"
+    wd_host: "wd1.myworkdayjobs.com"
+    site: "Careers"
+    keywords: *role_keywords
+  - name: "Gilead Sciences"
+    tenant: "gilead"
+    wd_host: "wd1.myworkdayjobs.com"
+    site: "GileadCareers"
+    keywords: *role_keywords
+  - name: "Regeneron"
+    tenant: "regeneron"
+    wd_host: "wd1.myworkdayjobs.com"
+    site: "Careers"
+    keywords: *role_keywords
+  - name: "Cigna"
+    tenant: "cigna"
+    wd_host: "wd5.myworkdayjobs.com"
+    site: "CIGNACareers"
+    keywords: *role_keywords
+  - name: "Humana"
+    tenant: "humana"
+    wd_host: "wd5.myworkdayjobs.com"
+    site: "Humana_External_Career_Site"
+    keywords: *role_keywords
+  - name: "PNC"
+    tenant: "pnc"
+    wd_host: "wd5.myworkdayjobs.com"
+    site: "External"
+    keywords: *role_keywords
+  - name: "Truist"
+    tenant: "truist"
+    wd_host: "wd1.myworkdayjobs.com"
+    site: "Careers"
+    keywords: *role_keywords
+  - name: "T. Rowe Price"
+    tenant: "troweprice"
+    wd_host: "wd5.myworkdayjobs.com"
+    site: "TROWEPRICE"
+    keywords: *role_keywords
+  - name: "Prudential Financial"
+    tenant: "prudential"
+    wd_host: "wd3.myworkdayjobs.com"
+    site: "Prudential"
+    keywords: *role_keywords
+  - name: "AIG"
+    tenant: "aig"
+    wd_host: "wd1.myworkdayjobs.com"
+    site: "aig"
+    keywords: *role_keywords
+  - name: "Allstate"
+    tenant: "allstate"
+    wd_host: "wd5.myworkdayjobs.com"
+    site: "ALLSTATE_Careers"
+    keywords: *role_keywords
+  - name: "Travelers"
+    tenant: "travelers"
+    wd_host: "wd5.myworkdayjobs.com"
+    site: "External"
+    keywords: *role_keywords
+  - name: "Chevron"
+    tenant: "chevron"
+    wd_host: "wd5.myworkdayjobs.com"
+    site: "jobs"
+    keywords: *role_keywords
+  - name: "ConocoPhillips"
+    tenant: "conocophillips"
+    wd_host: "wd1.myworkdayjobs.com"
+    site: "External"
+    keywords: *role_keywords
+  - name: "Baker Hughes"
+    tenant: "bakerhughes"
+    wd_host: "wd5.myworkdayjobs.com"
+    site: "bakerhughes"
+    keywords: *role_keywords
+  - name: "Target"
+    tenant: "target"
+    wd_host: "wd5.myworkdayjobs.com"
+    site: "TargetCareers"
+    keywords: *role_keywords
+  - name: "Gap Inc"
+    tenant: "gapinc"
+    wd_host: "wd1.myworkdayjobs.com"
+    site: "gapinc"
+    keywords: *role_keywords
+  - name: "Chipotle"
+    tenant: "chipotle"
+    wd_host: "wd5.myworkdayjobs.com"
+    site: "ChipotleCareers"
+    keywords: *role_keywords
+
   - name: "Visa"
     tenant: "visa"
     wd_host: "wd5.myworkdayjobs.com"
