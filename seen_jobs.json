@@ -511,12 +511,11 @@
     "REF085081W",
     "REF085110W"
   ],
-  "visa::Visa_Early_Careers": [
-    "REF067678W",
-    "REF080346W",
-    "REF082537W",
-    "REF083243W"
-  ],
+"visa::Visa_Early_Careers": [
+  "REF067678W",
+  "REF080346W",
+  "REF082537W"
+],
   "workday::Workday": [
     "JR-0093733",
     "JR-0097206",
