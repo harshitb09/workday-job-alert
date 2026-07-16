@@ -19,6 +19,7 @@ so the rest of the pipeline (dedup, keyword filtering, Discord alerts)
 doesn't need to know which ATS a company is on.
 """
 
+import argparse
 import json
 import os
 import re
@@ -160,6 +161,37 @@ def _request_with_retries(method, url, **kwargs):
             time.sleep(RETRY_SLEEP)
     print(f"  [!] Request failed after {RETRIES} attempts: {url} ({last_err})")
     return None
+
+
+REQUIRED_FIELDS = {
+    "workday": ["tenant", "wd_host", "site"],
+    "greenhouse": ["board_token"],
+    "lever": ["company"],
+    "rippling": ["board_id"],
+}
+
+
+def validate_company(company):
+    """Checks a company config entry is structurally valid before we try
+    to process it. Returns (is_valid, error_message). Catching this early
+    means one malformed entry produces a clear one-line warning instead of
+    crashing the whole run and losing every other company's results."""
+    if not isinstance(company, dict):
+        return False, f"entry is not a mapping/dict: {company!r}"
+
+    name = company.get("name")
+    if not name:
+        return False, "missing required field 'name'"
+
+    ats = company.get("ats", "workday")
+    if ats not in REQUIRED_FIELDS:
+        return False, f"unknown ats type '{ats}' (must be one of {list(REQUIRED_FIELDS)})"
+
+    missing = [f for f in REQUIRED_FIELDS[ats] if not company.get(f)]
+    if missing:
+        return False, f"missing required field(s) for ats='{ats}': {missing}"
+
+    return True, None
 
 
 def company_key(company):
@@ -388,78 +420,175 @@ def send_discord_alert(company, job):
     return False
 
 
+def send_test_alert():
+    """Sends a single synthetic test message to Discord, completely
+    bypassing config.yaml/seen_jobs.json/real job fetching. Exists purely
+    to answer the question 'is the webhook actually wired up correctly
+    right now?' without waiting for a real job posting or touching any
+    tracking state."""
+    if not DISCORD_WEBHOOK_URL:
+        print("[!] DISCORD_WEBHOOK_URL is not set — nothing to test against.")
+        print("    Set it in your repo's Settings -> Secrets and variables -> Actions.")
+        return 1
+
+    print(f"DISCORD_WEBHOOK_URL is set (starts with: {DISCORD_WEBHOOK_URL[:40]}...)")
+    print("Sending a synthetic test alert to Discord...")
+
+    fake_company = {"name": "Test Company (this is not a real employer)"}
+    fake_job = {
+        "title": "Example Software Engineer Position",
+        "url": "https://example.com/this-is-a-test-link",
+        "posted": "Posted just now (synthetic test — not a real job)",
+    }
+
+    success = send_discord_alert(fake_company, fake_job)
+    if success:
+        print()
+        print("SUCCESS: test message sent. Check your Discord channel now.")
+        print("If nothing shows up there despite this success message, the")
+        print("issue is on Discord's side (wrong channel, webhook pointed")
+        print("elsewhere) rather than in this script.")
+        return 0
+    else:
+        print()
+        print("FAILED: could not deliver the test message after retries.")
+        print("Likely causes: the webhook URL secret is wrong/malformed,")
+        print("the webhook was deleted in Discord, or a network issue.")
+        return 1
+
+
 def main():
     config = load_config()
     companies = config.get("companies", [])
     page_size = config.get("page_size", 20)
     max_jobs = config.get("max_jobs_per_company", 300)
 
+    if not DISCORD_WEBHOOK_URL:
+        print("[!] DISCORD_WEBHOOK_URL is not set — alerts will only be printed to this log, not sent to Discord.")
+    print(f"Loaded {len(companies)} companies from config.yaml. Max posting age for alerts: {MAX_POSTING_AGE_HOURS}h.")
+    print()
+
     state = load_state()
     total_new = 0
+    checked_ok = 0
+    skipped_invalid = 0
+    failed_companies = []
+    seen_keys = {}
 
-    for company in companies:
+    for i, company in enumerate(companies, 1):
+        label = company.get("name", f"<entry #{i}, no name>") if isinstance(company, dict) else f"<entry #{i}, malformed>"
+
+        is_valid, error = validate_company(company)
+        if not is_valid:
+            print(f"[{i}/{len(companies)}] SKIPPING '{label}': {error}")
+            skipped_invalid += 1
+            continue
+
         key = company_key(company)
-        seen_ids = set(state.get(key, []))
-        ats = company.get("ats", "workday")
+        if key in seen_keys:
+            print(f"[{i}/{len(companies)}] SKIPPING '{label}': duplicate config — same as '{seen_keys[key]}' "
+                  f"(key '{key}'). Two entries pointing at the same company/board will overwrite each "
+                  f"other's tracking state — remove one.")
+            skipped_invalid += 1
+            continue
+        seen_keys[key] = label
 
-        print(f"Checking {company['name']} [{ats}] ({key})...")
-        postings = fetch_jobs(company, page_size, max_jobs)
-        print(f"  fetched {len(postings)} postings")
+        try:
+            ats = company.get("ats", "workday")
+            seen_ids = set(state.get(key, []))
 
-        current_ids = set()
-        unseen_count = 0
-        keyword_match_count = 0
-        to_alert = []
-        skipped_titles = []
+            print(f"[{i}/{len(companies)}] Checking {company['name']} [{ats}] ({key})...")
+            postings = fetch_jobs(company, page_size, max_jobs)
+            print(f"  fetched {len(postings)} postings")
 
-        for job in postings:
-            job_id = job["id"]
-            current_ids.add(job_id)
+            current_ids = set()
+            unseen_count = 0
+            keyword_match_count = 0
+            to_alert = []
+            skipped_titles = []
 
-            if job_id in seen_ids:
-                continue
-            unseen_count += 1
+            for job in postings:
+                job_id = job["id"]
+                current_ids.add(job_id)
 
-            if not matches_keywords(job.get("title", ""), company.get("keywords") or []):
-                skipped_titles.append(job.get("title", "(no title)"))
-                continue
-            keyword_match_count += 1
+                if job_id in seen_ids:
+                    continue
+                unseen_count += 1
 
-            # Alert on anything new-to-us that's also recently posted
-            # (within MAX_POSTING_AGE_HOURS) — covers both "brand new since
-            # last check" and "posted up to a day ago, just discovered".
-            # Once alerted (or skipped as too old), it's marked seen either
-            # way below, so nothing is ever alerted on twice.
-            if is_recent(job, ats):
-                to_alert.append(job)
+                if not matches_keywords(job.get("title", ""), company.get("keywords") or []):
+                    skipped_titles.append(job.get("title", "(no title)"))
+                    continue
+                keyword_match_count += 1
 
-        print(f"  {unseen_count} new-to-us, {keyword_match_count} match keywords, "
-              f"{len(to_alert)} within {MAX_POSTING_AGE_HOURS}h -> alerting {len(to_alert)}")
-        if skipped_titles:
-            print(f"  skipped (new but didn't match keywords): {skipped_titles}")
+                # Alert on anything new-to-us that's also recently posted
+                # (within MAX_POSTING_AGE_HOURS) — covers both "brand new
+                # since last check" and "posted up to a day ago, just
+                # discovered". Once alerted (or skipped as too old), it's
+                # marked seen either way below, so nothing alerts twice.
+                if is_recent(job, ats):
+                    to_alert.append(job)
 
-        failed_ids = set()
-        for job in to_alert:
-            success = send_discord_alert(company, job)
-            if success:
-                total_new += 1
-            else:
-                # Don't record this job as "seen" — leaving it out of
-                # current_ids means next run will treat it as new again
-                # and retry the Discord send, instead of silently losing
-                # it the way a failed send used to.
-                failed_ids.add(job["id"])
-            time.sleep(1)  # be gentle with Discord rate limits
+            print(f"  {unseen_count} new-to-us, {keyword_match_count} match keywords, "
+                  f"{len(to_alert)} within {MAX_POSTING_AGE_HOURS}h -> alerting {len(to_alert)}")
+            if skipped_titles:
+                print(f"  skipped (new but didn't match keywords): {skipped_titles}")
 
-        # Everything fetched this run gets marked seen — including jobs
-        # that didn't match keywords or were too old to alert on — so
-        # nothing is ever re-evaluated or re-alerted on a later run.
-        # Failed sends are the one exception: left out so they retry.
-        state[key] = sorted(current_ids - failed_ids)
+            failed_ids = set()
+            for job in to_alert:
+                success = send_discord_alert(company, job)
+                if success:
+                    total_new += 1
+                else:
+                    # Don't record this job as "seen" — leaving it out of
+                    # current_ids means next run will treat it as new
+                    # again and retry the Discord send, instead of
+                    # silently losing it the way a failed send used to.
+                    failed_ids.add(job["id"])
+                time.sleep(1)  # be gentle with Discord rate limits
 
-    save_state(state)
-    print(f"Done. {total_new} new job(s) alerted.")
+            # Everything fetched this run gets marked seen — including
+            # jobs that didn't match keywords or were too old to alert
+            # on — so nothing is ever re-evaluated or re-alerted later.
+            # Failed sends are the one exception: left out so they retry.
+            state[key] = sorted(current_ids - failed_ids)
+            checked_ok += 1
+
+        except Exception as e:  # noqa: BLE001
+            # One company's unexpected failure (bad API response shape,
+            # network blip our retry logic didn't cover, etc.) must never
+            # take down the whole run. Log it clearly and move on — every
+            # other company still gets checked and its state still saved.
+            print(f"  [!] UNEXPECTED ERROR processing '{label}': {type(e).__name__}: {e}")
+            print(f"  [!] Skipping this company for this run; it will be retried next run.")
+            failed_companies.append(label)
+            continue
+
+        finally:
+            # Save after every company, not just at the very end — so if
+            # something does eventually kill the process (timeout, OOM,
+            # rate-limit ban mid-run), everything processed so far is
+            # still persisted instead of lost.
+            save_state(state)
+
+    print()
+    print("=" * 60)
+    print(f"Run summary: {checked_ok}/{len(companies)} companies checked successfully")
+    if skipped_invalid:
+        print(f"  {skipped_invalid} skipped due to invalid/duplicate config")
+    if failed_companies:
+        print(f"  {len(failed_companies)} failed unexpectedly: {failed_companies}")
+    print(f"  {total_new} new job(s) alerted")
+    print("=" * 60)
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--test", action="store_true",
+                         help="Send one synthetic test message to Discord and exit, "
+                              "without touching config.yaml or seen_jobs.json.")
+    args = parser.parse_args()
+
+    if args.test:
+        sys.exit(send_test_alert())
+    else:
+        sys.exit(main())
