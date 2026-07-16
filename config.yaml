@@ -1,0 +1,102 @@
+# Workday Job Alert — company config
+#
+# HOW TO FIND YOUR VALUES:
+# Open a company's Workday careers page in your browser, e.g.:
+#   https://nike.wd1.myworkdayjobs.com/NikeCareers
+#
+# Break that URL down:
+#   https://{tenant}.{wd_host}/{site}
+#            nike     wd1.myworkdayjobs.com   NikeCareers
+#
+#   tenant      -> "nike"
+#   wd_host     -> "wd1.myworkdayjobs.com"   (could be wd1, wd3, wd5, etc.)
+#   site        -> "NikeCareers"             (exact case matters)
+#
+# "keywords" — only alert on postings whose title contains at least one of
+# these (case-insensitive). Leave empty / [] to alert on every new posting.
+#
+# The list below (&role_keywords) covers IT / AI / Data Science / Cyber /
+# Software Engineering / Python / SQL / Data Engineer / Data Analyst roles,
+# and includes both full-time and intern titles (most companies put
+# "Intern"/"Internship" directly in the job title, so it's included as a
+# keyword too — full-time roles need no special keyword since they're the
+# default and are already matched by the role terms below).
+
+role_keywords: &role_keywords
+  # Software Engineering
+  - "software engineer"
+  - "software developer"
+  - "swe"
+  - "backend engineer"
+  - "backend developer"
+  - "full stack"
+  - "full-stack"
+  # Python / SQL
+  - "python developer"
+  - "python engineer"
+  - "sql developer"
+  # Data
+  - "data engineer"
+  - "data analyst"
+  - "data scientist"
+  - "data science"
+  # AI / ML
+  - "machine learning"
+  - "artificial intelligence"
+  - "ai engineer"
+  - "ml engineer"
+  # Cybersecurity
+  - "cybersecurity"
+  - "cyber security"
+  - "information security"
+  - "security engineer"
+  - "security analyst"
+  # General IT
+  - "information technology"
+  - "it analyst"
+  - "it support"
+  - "systems engineer"
+  - "systems analyst"
+  # Internships (full-time roles are already covered by the terms above)
+  - "intern"
+  - "internship"
+  - "co-op"
+
+companies:
+  - name: "Nike"
+    tenant: "nike"
+    wd_host: "wd1.myworkdayjobs.com"
+    site: "NikeCareers"
+    keywords: *role_keywords
+
+  - name: "Salesforce"
+    tenant: "salesforce"
+    wd_host: "wd12.myworkdayjobs.com"
+    site: "External_Career_Site"
+    keywords: *role_keywords
+
+  - name: "Adobe"
+    tenant: "adobe"
+    wd_host: "wd5.myworkdayjobs.com"
+    site: "external_experienced"
+    keywords: *role_keywords
+
+  - name: "Workday (yes, they use their own product)"
+    tenant: "workday"
+    wd_host: "wd5.myworkdayjobs.com"
+    site: "Workday"
+    keywords: *role_keywords
+
+  - name: "PayPal"
+    tenant: "paypal"
+    wd_host: "wd5.myworkdayjobs.com"
+    site: "JobSearch"
+    keywords: *role_keywords
+
+# Add more companies here, following the same pattern. Just copy a block
+# above, swap in the new tenant/wd_host/site, and reuse `*role_keywords`
+# (or write a custom list for that company if you want it to differ).
+
+# Settings
+max_jobs_per_company: 300   # safety cap on how many postings to scan per run
+page_size: 20                # Workday's API page size (20 is standard)
