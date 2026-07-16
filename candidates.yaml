@@ -651,3 +651,157 @@ candidates:
   - {name: "Sanmina Corporation", tenant: "sanmina"}
   - {name: "Celestica", tenant: "celestica"}
   - {name: "Benchmark Electronics", tenant: "benchmark"}
+
+  # --- Batch 4: IT/tech companies headquartered in California, Texas,
+  # and Washington State specifically (avoiding duplicates with earlier
+  # batches — many big CA/WA tech names like Google, Apple, Meta, Amazon,
+  # Microsoft, Salesforce, Adobe, Nvidia, Cisco, Oracle-adjacent, etc. are
+  # already covered above). "Almost all" isn't achievable — there are tens
+  # of thousands of IT companies across these 3 states, most too small to
+  # have any public ATS-based career site — but this is a real, sizeable
+  # batch of notable ones.
+
+  # California
+  - {name: "Oracle", tenant: "oracle"}
+  - {name: "Synopsys", tenant: "synopsys"}
+  - {name: "Cadence Design Systems", tenant: "cadence"}
+  - {name: "Gen Digital (Symantec/Norton)", tenant: "gendigital"}
+  - {name: "McAfee", tenant: "mcafee"}
+  - {name: "Yahoo", tenant: "yahoo"}
+  - {name: "NETGEAR", tenant: "netgear"}
+  - {name: "SanDisk", tenant: "sandisk"}
+  - {name: "Sunrun", tenant: "sunrun"}
+  - {name: "Cloudera", tenant: "cloudera"}
+  - {name: "Rambus", tenant: "rambus"}
+  - {name: "Synaptics", tenant: "synaptics"}
+  - {name: "Rubrik", tenant: "rubrik"}
+  - {name: "Cohesity", tenant: "cohesity"}
+  - {name: "10x Genomics", tenant: "10xgenomics"}
+  - {name: "Guardant Health", tenant: "guardanthealth"}
+  - {name: "Natera", tenant: "natera"}
+  - {name: "Zoox", tenant: "zoox"}
+  - {name: "Chargepoint", tenant: "chargepoint"}
+  - {name: "EVgo", tenant: "evgo"}
+  - {name: "ServiceTitan", tenant: "servicetitan"}
+  - {name: "Gainsight", tenant: "gainsight"}
+  - {name: "Zuora", tenant: "zuora"}
+  - {name: "Yext", tenant: "yext"}
+  - {name: "Segment", tenant: "segment"}
+  - {name: "Amplitude Analytics", tenant: "amplitudeanalytics"}
+  - {name: "Asana Inc", tenant: "asanainc"}
+  - {name: "Gusto Inc", tenant: "gustoinc"}
+  - {name: "Verkada", tenant: "verkada"}
+  - {name: "Samsara Inc", tenant: "samsarainc"}
+  - {name: "Anduril Industries", tenant: "anduril"}
+  - {name: "Relativity Space", tenant: "relativityspace"}
+  - {name: "SpaceX", tenant: "spacex"}
+  - {name: "Joby Aviation", tenant: "jobyaviation"}
+  - {name: "Archer Aviation", tenant: "archeraviation"}
+  - {name: "Nuro", tenant: "nuro"}
+  - {name: "Aurora Solar", tenant: "aurorasolar"}
+  - {name: "Bloom Energy", tenant: "bloomenergy"}
+  - {name: "Enphase Energy", tenant: "enphase"}
+  - {name: "SunPower", tenant: "sunpower"}
+  - {name: "Fastly Inc", tenant: "fastlyinc"}
+  - {name: "Cloudflare Inc", tenant: "cloudflareinc"}
+  - {name: "Docker", tenant: "docker"}
+  - {name: "Chef Software", tenant: "chef"}
+  - {name: "Puppet", tenant: "puppet"}
+  - {name: "SUSE", tenant: "suse"}
+  - {name: "Cloudinary", tenant: "cloudinary"}
+  - {name: "Algolia", tenant: "algolia"}
+  - {name: "Sprinklr", tenant: "sprinklr"}
+  - {name: "Persona", tenant: "persona"}
+  - {name: "Ironclad", tenant: "ironclad"}
+  - {name: "Gong.io", tenant: "gong"}
+  - {name: "Clari", tenant: "clari"}
+  - {name: "Highspot", tenant: "highspot"}
+  - {name: "Postman", tenant: "postman"}
+  - {name: "Retool", tenant: "retool"}
+  - {name: "Airbyte", tenant: "airbyte"}
+  - {name: "dbt Labs", tenant: "dbtlabs"}
+  - {name: "Fivetran", tenant: "fivetran"}
+  - {name: "Sigma Computing", tenant: "sigmacomputing"}
+  - {name: "ThoughtSpot", tenant: "thoughtspot"}
+  - {name: "Domo", tenant: "domo"}
+  - {name: "Alteryx", tenant: "alteryx"}
+  - {name: "Informatica", tenant: "informatica"}
+  - {name: "Talend", tenant: "talend"}
+  - {name: "Palo Alto Networks Inc", tenant: "paloaltonetworksinc"}
+  - {name: "Gen AI (Norton LifeLock)", tenant: "nortonlifelock"}
+  - {name: "Menlo Security", tenant: "menlosecurity"}
+  - {name: "Abnormal Security", tenant: "abnormalsecurity"}
+  - {name: "Vectra AI", tenant: "vectra"}
+  - {name: "Exabeam", tenant: "exabeam"}
+  - {name: "Corelight", tenant: "corelight"}
+  - {name: "ExtraHop Networks", tenant: "extrahop"}
+
+  # Texas
+  - {name: "Dell Inc (Round Rock)", tenant: "dellroundrock"}
+  - {name: "USAA", tenant: "usaa"}
+  - {name: "Indeed", tenant: "indeed"}
+  - {name: "SolarWinds", tenant: "solarwinds"}
+  - {name: "RealPage", tenant: "realpage"}
+  - {name: "Cirrus Logic", tenant: "cirruslogic"}
+  - {name: "Silicon Labs", tenant: "siliconlabs"}
+  - {name: "GM Financial", tenant: "gmfinancial"}
+  - {name: "Frito-Lay", tenant: "fritolay"}
+  - {name: "Neiman Marcus Group", tenant: "neimanmarcus"}
+  - {name: "7-Eleven", tenant: "7-eleven"}
+  - {name: "Flowserve", tenant: "flowserve"}
+  - {name: "Trinity Industries", tenant: "trinityindustries"}
+  - {name: "Energy Transfer", tenant: "energytransfer"}
+  - {name: "Sabre Corporation", tenant: "sabre"}
+  - {name: "CSW Industrials", tenant: "cswindustrials"}
+  - {name: "Kimberly-Clark Professional", tenant: "kcprofessional"}
+  - {name: "NuStar Energy", tenant: "nustarenergy"}
+  - {name: "Tyler Technologies", tenant: "tylertech"}
+  - {name: "Vinco Ventures", tenant: "vincoventures"}
+  - {name: "CGI Federal", tenant: "cgifederal"}
+  - {name: "HMS Holdings", tenant: "hmsholdings"}
+  - {name: "Match.com (Texas HQ)", tenant: "matchdotcom"}
+  - {name: "Rackspace Inc", tenant: "rackspaceinc"}
+  - {name: "Alkami Technology", tenant: "alkami"}
+  - {name: "CommunityAmerica Credit Union IT", tenant: "communityamerica"}
+  - {name: "Optiv Security", tenant: "optiv"}
+  - {name: "TXU Energy", tenant: "txuenergy"}
+  - {name: "Vistra Corp", tenant: "vistracorp"}
+  - {name: "Atmos Energy", tenant: "atmosenergy"}
+  - {name: "Celanese Corporation", tenant: "celanesecorp"}
+  - {name: "Kimberly Hall Tech", tenant: "kimberlyhalltech"}
+  - {name: "Cadence Bank Technology", tenant: "cadencebank"}
+  - {name: "Whataburger", tenant: "whataburger"}
+  - {name: "GameStop", tenant: "gamestop"}
+  - {name: "CBRE Group Texas", tenant: "cbretexas"}
+
+  # Washington State
+  - {name: "T-Mobile US", tenant: "tmobileus"}
+  - {name: "Alaska Airlines", tenant: "alaskaair"}
+  - {name: "Providence Health & Services", tenant: "providence"}
+  - {name: "Tableau Software", tenant: "tableau"}
+  - {name: "Avalara", tenant: "avalara"}
+  - {name: "Impinj", tenant: "impinj"}
+  - {name: "Blue Origin", tenant: "blueorigin"}
+  - {name: "Nintendo of America", tenant: "nintendo"}
+  - {name: "Big Fish Games", tenant: "bigfishgames"}
+  - {name: "Valve Corporation", tenant: "valvesoftware"}
+  - {name: "Wizards of the Coast", tenant: "wizards"}
+  - {name: "Expeditors International", tenant: "expeditors"}
+  - {name: "Holland America Line", tenant: "hollandamerica"}
+  - {name: "Zillow Group", tenant: "zillowgroup"}
+  - {name: "Remitly", tenant: "remitly"}
+  - {name: "Outreach Corp", tenant: "outreachcorp"}
+  - {name: "Icertis", tenant: "icertis"}
+  - {name: "Qumulo", tenant: "qumulo"}
+  - {name: "Auth0 by Okta", tenant: "auth0"}
+  - {name: "Textio", tenant: "textio"}
+  - {name: "Redfin Corporation", tenant: "redfincorp"}
+  - {name: "PitchBook Data", tenant: "pitchbook"}
+  - {name: "Trupanion", tenant: "trupanion"}
+  - {name: "SkyKick", tenant: "skykick"}
+  - {name: "Extrahop Networks WA", tenant: "extrahopwa"}
+  - {name: "Zulily", tenant: "zulily"}
+  - {name: "Rover.com", tenant: "rover"}
+  - {name: "Convoy Inc", tenant: "convoyinc"}
+  - {name: "Boeing Commercial Airplanes", tenant: "boeingcommercial"}
+  - {name: "Fred Hutchinson Cancer Center", tenant: "fredhutch"}
