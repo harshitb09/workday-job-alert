@@ -109,6 +109,62 @@ location_keywords: &location_keywords
 # Add more using the same pattern — see the bottom of this file.
 
 companies:
+  - name: "Pinterest"
+    ats: "greenhouse"
+    board_token: "pinterest"
+    keywords: *role_keywords
+    locations: *location_keywords
+  - name: "Twilio"
+    ats: "greenhouse"
+    board_token: "twilio"
+    keywords: *role_keywords
+    locations: *location_keywords
+  - name: "Okta"
+    ats: "greenhouse"
+    board_token: "okta"
+    keywords: *role_keywords
+    locations: *location_keywords
+  - name: "MongoDB"
+    ats: "greenhouse"
+    board_token: "mongodb"
+    keywords: *role_keywords
+    locations: *location_keywords
+  - name: "Anaplan"
+    ats: "greenhouse"
+    board_token: "anaplan"
+    keywords: *role_keywords
+    locations: *location_keywords
+  - name: "TripAdvisor"
+    ats: "greenhouse"
+    board_token: "tripadvisor"
+    keywords: *role_keywords
+    locations: *location_keywords
+  - name: "GoDaddy"
+    ats: "greenhouse"
+    board_token: "godaddy"
+    keywords: *role_keywords
+    locations: *location_keywords
+  - name: "Block (Square)"
+    ats: "greenhouse"
+    board_token: "block"
+    keywords: *role_keywords
+    locations: *location_keywords
+  - name: "Airbnb"
+    ats: "greenhouse"
+    board_token: "airbnb"
+    keywords: *role_keywords
+    locations: *location_keywords
+  - name: "Coupa"
+    ats: "lever"
+    company: "coupa"
+    keywords: *role_keywords
+    locations: *location_keywords
+  - name: "MetLife"
+    ats: "lever"
+    company: "metlife"
+    keywords: *role_keywords
+    locations: *location_keywords
+
   - name: "Visa"
     tenant: "visa"
     wd_host: "wd5.myworkdayjobs.com"

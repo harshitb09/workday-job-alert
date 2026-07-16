@@ -1,0 +1,39 @@
+# Auto-discovered by discover_ats.py — review before merging into config.yaml
+# Each entry returned real job postings from the platform's public API.
+
+greenhouse:
+- name: Pinterest
+  board_token: pinterest
+  jobs_seen: 194
+- name: Twilio
+  board_token: twilio
+  jobs_seen: 163
+- name: Okta
+  board_token: okta
+  jobs_seen: 344
+- name: MongoDB
+  board_token: mongodb
+  jobs_seen: 389
+- name: Anaplan
+  board_token: anaplan
+  jobs_seen: 175
+- name: TripAdvisor
+  board_token: tripadvisor
+  jobs_seen: 82
+- name: GoDaddy
+  board_token: godaddy
+  jobs_seen: 25
+- name: Block (Square)
+  board_token: block
+  jobs_seen: 206
+- name: Airbnb
+  board_token: airbnb
+  jobs_seen: 197
+lever:
+- name: Coupa
+  company: coupa
+  jobs_seen: 101
+- name: MetLife
+  company: metlife
+  jobs_seen: 39
+rippling: []
