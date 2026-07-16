@@ -1,0 +1,55 @@
+name: Discover Greenhouse/Lever/Rippling Companies
+
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: "Only scan the first N candidates (leave blank for all)"
+        required: false
+        default: ""
+      auto_merge:
+        description: "Automatically merge confirmed companies into config.yaml"
+        required: false
+        default: "true"
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run discovery
+        run: |
+          if [ -n "${{ github.event.inputs.limit }}" ]; then
+            python discover_ats.py --limit ${{ github.event.inputs.limit }}
+          else
+            python discover_ats.py
+          fi
+
+      - name: Show results summary
+        run: cat discovered_ats_companies.yaml
+
+      - name: Merge confirmed companies into config.yaml
+        if: ${{ github.event.inputs.auto_merge == 'true' }}
+        run: python merge_discovered_ats.py
+
+      - name: Commit results
+        run: |
+          git config user.name "workday-job-alert-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add discovered_ats_companies.yaml config.yaml
+          git diff --quiet --cached || git commit -m "Discover Greenhouse/Lever/Rippling companies [skip ci]"
+          git push
