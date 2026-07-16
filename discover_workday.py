@@ -186,9 +186,19 @@ def main():
     not_found = []
 
     for i, cand in enumerate(candidates, 1):
-        name, tenant = cand["name"], cand["tenant"]
+        try:
+            name, tenant = cand["name"], cand["tenant"]
+        except (KeyError, TypeError) as e:
+            print(f"[{i}/{len(candidates)}] SKIPPING malformed candidate entry {cand!r}: {e}")
+            continue
+
         print(f"[{i}/{len(candidates)}] {name} (tenant guess: {tenant})...", end=" ", flush=True)
-        matches = discover(tenant)
+        try:
+            matches = discover(tenant)
+        except Exception as e:  # noqa: BLE001
+            print(f"ERROR: {type(e).__name__}: {e} — skipping, will retry next run")
+            not_found.append(name)
+            continue
 
         nonzero = [m for m in matches if m[2] > 0]
         zero = [m for m in matches if m[2] == 0]
