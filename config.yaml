@@ -70,6 +70,22 @@ role_keywords: &role_keywords
   - "intern"
   - "internship"
   - "co-op"
+  # Entry-level / new grad (distinct from internships — these are
+  # full-time roles aimed at recent graduates, which "intern" alone
+  # doesn't catch)
+  - "entry level"
+  - "entry-level"
+  - "new grad"
+  - "new graduate"
+  - "early career"
+  - "junior developer"
+  - "junior engineer"
+  - "junior software"
+  - "graduate program"
+  - "graduate engineer"
+  - "associate software engineer"
+  - "associate developer"
+  - "associate engineer"
 
 # Below are companies that (a) are well-documented, active visa sponsors
 # (H-1B/OPT/CPT — verified via public H-1B filing data sources) and (b)
