@@ -54,4 +54,13 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git add discovered_companies.yaml config.yaml
           git diff --quiet --cached || git commit -m "Discover Workday companies [skip ci]"
-          git push
+          # This run can take several minutes, during which the scheduled
+          # "Check Workday Jobs" workflow may have already pushed its own
+          # commit (updating seen_jobs.json) — pull --rebase avoids a
+          # rejected push in that race, retrying a couple times since a
+          # second collision is possible but unlikely.
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push && break
+            echo "Push attempt $i failed, retrying..."
+            sleep 5
+          done
