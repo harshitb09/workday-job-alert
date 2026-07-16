@@ -49,6 +49,7 @@ def main():
             f"    wd_host: \"{c['wd_host']}\"\n"
             f"    site: \"{c['site']}\"\n"
             f"    keywords: *role_keywords\n"
+            f"    locations: *location_keywords\n"
         )
         new_blocks.append(block)
         existing_keys.add(key)
