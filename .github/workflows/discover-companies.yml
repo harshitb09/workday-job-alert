@@ -70,27 +70,36 @@ jobs:
         run: |
           git config user.name "workday-job-alert-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add discovered_companies.yaml config.yaml backfilled_jobs.json
-          if git diff --quiet --cached; then
-            echo "No changes to commit."
-            exit 0
-          fi
-          git commit -m "Discover Workday companies [skip ci]"
-          # This run can take several minutes, during which the scheduled
-          # "Check Workday Jobs" workflow may have already pushed its own
-          # commit — fetch + rebase avoids a rejected push in that race,
-          # retrying a couple times since a second collision is possible.
+
+          cp discovered_companies.yaml /tmp/discovered_companies.yaml.new 2>/dev/null || true
+          cp config.yaml /tmp/config.yaml.new 2>/dev/null || true
+          cp backfilled_jobs.json /tmp/backfilled_jobs.json.new 2>/dev/null || true
+
           success=false
           for i in 1 2 3; do
             git fetch origin main
-            if git rebase origin/main && git push origin HEAD:main; then
+            git reset --hard origin/main
+
+            cp /tmp/discovered_companies.yaml.new discovered_companies.yaml 2>/dev/null || true
+            cp /tmp/config.yaml.new config.yaml 2>/dev/null || true
+            cp /tmp/backfilled_jobs.json.new backfilled_jobs.json 2>/dev/null || true
+
+            git add discovered_companies.yaml config.yaml backfilled_jobs.json
+            if git diff --quiet --cached; then
+              echo "No changes to commit."
+              success=true
+              break
+            fi
+
+            git commit -m "Discover Workday companies [skip ci]"
+            if git push origin HEAD:main; then
               success=true
               break
             fi
             echo "Push attempt $i failed, retrying in 5s..."
-            git rebase --abort 2>/dev/null || true
             sleep 5
           done
+
           if [ "$success" != "true" ]; then
             echo "::error::Failed to push after 3 attempts."
             exit 1
