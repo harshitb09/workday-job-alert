@@ -1,6 +1,11 @@
 name: Discover Greenhouse/Lever/Rippling Companies
 
+# Runs automatically once a week (offset from the Workday discovery run
+# to avoid both hitting the repo at once) plus available for manual runs
+# anytime from the Actions tab.
 on:
+  schedule:
+    - cron: "0 7 * * 1"   # every Monday at 07:00 UTC (1h after Workday discovery)
   workflow_dispatch:
     inputs:
       limit:
@@ -22,6 +27,8 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -43,17 +50,36 @@ jobs:
         run: cat discovered_ats_companies.yaml
 
       - name: Merge confirmed companies into config.yaml
-        if: ${{ github.event.inputs.auto_merge == 'true' }}
+        if: ${{ github.event_name == 'schedule' || github.event.inputs.auto_merge == 'true' }}
         run: python merge_discovered_ats.py
+
+      - name: Backfill currently-open postings for newly discovered companies
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: python poll_workday.py --backfill
 
       - name: Commit results
         run: |
           git config user.name "workday-job-alert-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add discovered_ats_companies.yaml config.yaml
-          git diff --quiet --cached || git commit -m "Discover Greenhouse/Lever/Rippling companies [skip ci]"
+          git add discovered_ats_companies.yaml config.yaml backfilled_jobs.json
+          if git diff --quiet --cached; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git commit -m "Discover Greenhouse/Lever/Rippling companies [skip ci]"
+          success=false
           for i in 1 2 3; do
-            git pull --rebase origin main && git push && break
-            echo "Push attempt $i failed, retrying..."
+            git fetch origin main
+            if git rebase origin/main && git push origin HEAD:main; then
+              success=true
+              break
+            fi
+            echo "Push attempt $i failed, retrying in 5s..."
+            git rebase --abort 2>/dev/null || true
             sleep 5
           done
+          if [ "$success" != "true" ]; then
+            echo "::error::Failed to push after 3 attempts."
+            exit 1
+          fi
